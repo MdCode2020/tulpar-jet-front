@@ -256,46 +256,34 @@ export class HomeComponent implements OnInit {
     return isPlatformBrowser(this.platformId);
   }
   getAboutUs() {
-    if (this.isBrowser) {
-      const langNumber = localStorage.getItem('lang') || '2';
-      this._homeService.getAboutUs(Number(langNumber)).subscribe({
-        next: (_aboutUs) => {
-          this.aboutUs = _aboutUs;
-          this.apiDone();
-        },
-        error: () => this.apiDone(),
-      });
-    } else {
-      this.apiDone();
-    }
+    const langNumber = this.isBrowser ? localStorage.getItem('lang') || '2' : '2';
+    this._homeService.getAboutUs(Number(langNumber)).subscribe({
+      next: (_aboutUs) => {
+        this.aboutUs = _aboutUs;
+        this.apiDone();
+      },
+      error: () => this.apiDone(),
+    });
   }
   getVision() {
-    if (this.isBrowser) {
-      const langNumber = localStorage.getItem('lang') || '2';
-      this._homeService.getVision(Number(langNumber)).subscribe({
-        next: (_vision) => {
-          this.vision = _vision;
-          this.apiDone();
-        },
-        error: () => this.apiDone(),
-      });
-    } else {
-      this.apiDone();
-    }
+    const langNumber = this.isBrowser ? localStorage.getItem('lang') || '2' : '2';
+    this._homeService.getVision(Number(langNumber)).subscribe({
+      next: (_vision) => {
+        this.vision = _vision;
+        this.apiDone();
+      },
+      error: () => this.apiDone(),
+    });
   }
   getMission() {
-    if (this.isBrowser) {
-      const langNumber = localStorage.getItem('lang') || '2';
-      this._homeService.getMission(Number(langNumber)).subscribe({
-        next: (_mission) => {
-          this.mission = _mission;
-          this.apiDone();
-        },
-        error: () => this.apiDone(),
-      });
-    } else {
-      this.apiDone();
-    }
+    const langNumber = this.isBrowser ? localStorage.getItem('lang') || '2' : '2';
+    this._homeService.getMission(Number(langNumber)).subscribe({
+      next: (_mission) => {
+        this.mission = _mission;
+        this.apiDone();
+      },
+      error: () => this.apiDone(),
+    });
   }
   // ngOnDestroy() {
   //   if (this.intervalId) clearInterval(this.intervalId);
