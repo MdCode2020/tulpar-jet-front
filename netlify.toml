@@ -4,3 +4,7 @@
 
 [[plugins]]
   package = "@netlify/angular-runtime"
+
+[[edge_functions]]
+  path = "/*"
+  function = "angular-ssr"
