@@ -1,0 +1,26 @@
+<app-navbar></app-navbar>
+
+<div class="faq-page">
+  <div class="faq-hero">
+    <h1 class="faq-hero__title">{{ 'faq.pageTitle' | translate }}</h1>
+    <p class="faq-hero__sub">{{ 'faq.pageSub' | translate }}</p>
+  </div>
+
+  <div class="faq-list">
+    @for (item of items; track item.question) {
+      <div class="faq-item" [class.faq-item--open]="item.open">
+        <button class="faq-item__btn" (click)="toggle(item)">
+          <span>{{ item.question }}</span>
+          <svg class="faq-item__icon" width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path d="M5 8l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </button>
+        @if (item.open) {
+          <div class="faq-item__answer">{{ item.answer }}</div>
+        }
+      </div>
+    }
+  </div>
+</div>
+
+<app-footer></app-footer>

@@ -1,0 +1,80 @@
+<app-navbar></app-navbar>
+
+<div class="iletisim-page">
+  <div class="iletisim-hero">
+    <h1 class="iletisim-hero__title">{{ 'contact.pageTitle' | translate }}</h1>
+    <p class="iletisim-hero__sub">{{ 'contact.pageSub' | translate }}</p>
+  </div>
+
+  <div class="iletisim-layout">
+    <div class="iletisim-info">
+      <div class="info-card">
+        <div class="info-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81 19.79 19.79 0 0110 1.18 2 2 0 0112 3v3a2 2 0 01-1.44 1.93 1 1 0 00-.21.05 16 16 0 006.62 6.62 1 1 0 00.05-.21A2 2 0 0119 13h3a2 2 0 012 1.92z"/>
+          </svg>
+        </div>
+        <div>
+          <p class="info-card__label">{{ 'contact.phoneLabel' | translate }}</p>
+          <p class="info-card__value">+90 (212) 000 00 00</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+            <polyline points="22,6 12,13 2,6"/>
+          </svg>
+        </div>
+        <div>
+          <p class="info-card__label">{{ 'contact.emailLabel' | translate }}</p>
+          <p class="info-card__value">info&#64;tulparjet.com</p>
+        </div>
+      </div>
+      <div class="info-card">
+        <div class="info-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/>
+            <circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div>
+          <p class="info-card__label">{{ 'contact.addressLabel' | translate }}</p>
+          <p class="info-card__value">{{ 'contact.addressValue' | translate }}</p>
+        </div>
+      </div>
+    </div>
+
+    <form class="iletisim-form" (ngSubmit)="submit()" #f="ngForm">
+      @if (successMsg) {
+        <div class="form-alert form-alert--success">{{ successMsg }}</div>
+      }
+      @if (errorMsg) {
+        <div class="form-alert form-alert--error">{{ errorMsg }}</div>
+      }
+      <div class="form-row">
+        <div class="form-group">
+          <label for="name">{{ 'contact.nameField' | translate }}</label>
+          <input id="name" type="text" [(ngModel)]="form.name" name="name" required [placeholder]="'contact.namePlaceholder' | translate" />
+        </div>
+        <div class="form-group">
+          <label for="email">{{ 'contact.emailField' | translate }}</label>
+          <input id="email" type="email" [(ngModel)]="form.email" name="email" required [placeholder]="'contact.emailPlaceholder' | translate" />
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="phone">{{ 'contact.phoneField' | translate }}</label>
+        <input id="phone" type="tel" [(ngModel)]="form.phone" name="phone" [placeholder]="'contact.phonePlaceholder' | translate" />
+      </div>
+      <div class="form-group">
+        <label for="message">{{ 'contact.messageField' | translate }}</label>
+        <textarea id="message" [(ngModel)]="form.message" name="message" required rows="6" [placeholder]="'contact.messagePlaceholder' | translate"></textarea>
+      </div>
+      <button type="submit" class="form-submit" [disabled]="sending || !f.valid">
+        {{ sending ? ('contact.sending' | translate) : ('contact.send' | translate) }}
+      </button>
+    </form>
+  </div>
+</div>
+
+<app-footer></app-footer>

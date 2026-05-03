@@ -1,0 +1,280 @@
+:host {
+  display: block;
+}
+
+.navbar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  padding: 18px 24px;
+  transition:
+    background 0.35s ease,
+    backdrop-filter 0.35s ease,
+    box-shadow 0.35s ease;
+  @media (max-width: 767px) {
+    // background: rgb(0 10 51 / 82%);
+    // backdrop-filter: blur(14px);
+    // -webkit-backdrop-filter: blur(14px);
+    // box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06);
+
+    // Dark background: switch to white
+    --nav-text: #ffffff;
+    --nav-text-muted: rgba(255, 255, 255, 0.75);
+    --nav-border: rgba(255, 255, 255, 0.2);
+    --nav-ham: rgba(255, 255, 255, 0.85);
+  }
+  // Top of page: hero is light, so use dark colors
+  --nav-text: #ffffff;
+  --nav-text-muted: rgba(255, 255, 255, 0.75);
+  --nav-border: rgba(255, 255, 255, 0.2);
+  --nav-ham: rgba(255, 255, 255, 0.85);
+
+  &.scrolled {
+    // background: rgba(13, 20, 50, 0.65);
+    // backdrop-filter: blur(14px);
+    // -webkit-backdrop-filter: blur(14px);
+    // box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06 );
+
+    // Dark background: switch to white
+    --nav-text: #ffffff;
+    --nav-text-muted: rgba(255, 255, 255, 0.75);
+    --nav-border: rgba(255, 255, 255, 0.2);
+    --nav-ham: rgba(255, 255, 255, 0.85);
+  }
+
+  // Non-home pages: dark blue background, always use white text
+  &.dark-bg {
+    --nav-text: #ffffff;
+    --nav-text-muted: rgba(255, 255, 255, 0.75);
+    --nav-border: rgba(255, 255, 255, 0.2);
+    --nav-ham: rgba(255, 255, 255, 0.85);
+  }
+}
+
+.navbar__inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.navbar__logo {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--nav-text);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+  flex-shrink: 0;
+  transition: color 0.35s;
+}
+
+.navbar__links {
+  display: flex;
+  gap: 32px;
+
+  @media (max-width: 767px) {
+    display: none;
+  }
+}
+
+.navbar__link {
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  // text-transform: uppercase;
+  color: var(--nav-text-muted);
+  text-decoration: none;
+  transition:
+    color 0.35s,
+    font-weight 0s;
+
+  .scrolled & {
+    color: rgba(255, 255, 255, 0.85);
+    font-weight: 700;
+  }
+
+  &:hover {
+    color: var(--nav-text);
+  }
+}
+
+.navbar__right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+// ── Language picker ─────────────────────────────────────
+.lang-wrapper {
+  position: relative;
+}
+
+.lang-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: 1px solid var(--nav-border);
+  border-radius: 20px;
+  padding: 6px 12px;
+  color: var(--nav-text-muted);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  transition:
+    border-color 0.35s,
+    color 0.35s,
+    background 0.2s;
+
+  &:hover,
+  &.open {
+    border-color: var(--nav-text);
+    color: var(--nav-text);
+    background: rgba(128, 128, 128, 0.08);
+  }
+}
+
+.lang-chevron {
+  color: currentColor;
+  transition: transform 0.25s;
+
+  .open & {
+    transform: rotate(180deg);
+  }
+}
+
+.lang-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  min-width: 100px;
+  background: rgba(13, 20, 50, 0.92);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  animation: dropdown-open 0.22s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: top right;
+}
+
+@keyframes dropdown-open {
+  from {
+    opacity: 0;
+    transform: scaleY(0.85) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: scaleY(1) translateY(0);
+  }
+}
+
+.lang-option {
+  display: block;
+  width: 100%;
+  padding: 10px 16px;
+  background: transparent;
+  border: none;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-align: left;
+  cursor: pointer;
+  transition:
+    background 0.15s,
+    color 0.15s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  &.active {
+    color: #fff;
+    background: rgba(26, 86, 219, 0.3);
+  }
+}
+
+// ── Hamburger ─────────────────────────────────────────
+.navbar__hamburger {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 36px;
+  height: 36px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px;
+
+  @media (max-width: 767px) {
+    display: flex;
+  }
+
+  span {
+    display: block;
+    height: 1.5px;
+    background: var(--nav-ham);
+    border-radius: 2px;
+    transition:
+      transform 0.3s,
+      opacity 0.3s,
+      background 0.35s;
+  }
+
+  &.open span:nth-child(1) {
+    transform: translateY(6.5px) rotate(45deg);
+  }
+  &.open span:nth-child(2) {
+    opacity: 0;
+    transform: scaleX(0);
+  }
+  &.open span:nth-child(3) {
+    transform: translateY(-6.5px) rotate(-45deg);
+  }
+}
+
+// ── Mobile menu ─────────────────────────────────────
+.navbar__mobile {
+  max-width: 1200px;
+  margin: 12px auto 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  animation: mobile-drop 0.25s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  transform-origin: top;
+}
+
+@keyframes mobile-drop {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.navbar__mobile-link {
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.75);
+  text-decoration: none;
+  padding: 12px 4px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  transition: color 0.2s;
+
+  &:hover {
+    color: #fff;
+  }
+}

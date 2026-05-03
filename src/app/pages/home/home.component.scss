@@ -1,0 +1,1100 @@
+.con-bg {
+  background: #131e41 url('/assets/images/con-bg.jpg');
+}
+.spline-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: #131e41;
+}
+// About Tabs Section
+.about-tabs-section {
+  background: #131e41 url('/assets/images/bg_columns.jpg') 50% 250px no-repeat;
+}
+.aviapark-section {
+  background: #131e41 url('/assets/images/bg_avia.jpg') 50% 135px no-repeat;
+
+  // add media query for mobile
+  @media (max-width: 768px) {
+    background-position: 50% 150px;
+    background-size: 730px;
+  }
+}
+.benefits-section {
+  background: #131e41 url('/assets/images/bg_benefits.jpg') top no-repeat;
+}
+.about-tab-btn {
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.35);
+  background: transparent;
+  border: none;
+  padding: 14px 20px;
+  text-align: left;
+  cursor: pointer;
+  position: relative;
+  transition: color 0.3s ease;
+  border-left: 2px solid rgba(255, 255, 255, 0.08);
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: -2px;
+    top: 0;
+    height: 100%;
+    width: 2px;
+    background: #fff;
+    transform: scaleY(0);
+    transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: bottom;
+  }
+
+  &:hover {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  &.active {
+    color: #fff;
+
+    &::before {
+      transform: scaleY(1);
+    }
+  }
+}
+
+.about-tab-content {
+  position: relative;
+}
+
+.tab-panel {
+  opacity: 0;
+  transform: translateY(12px);
+  transition: none;
+
+  &.tab-enter {
+    animation: tab-fade-in 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+  }
+}
+
+@keyframes tab-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tab-label {
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 16px;
+}
+
+.tab-title {
+  font-size: clamp(22px, 3.5vw, 42px);
+  line-height: 1.15;
+  font-weight: 500;
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+.tab-text {
+  font-size: clamp(14px, 1.5vw, 17px);
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.55);
+  // max-width: 560px;
+}
+
+::ng-deep .om-three-globe-canvas-wrapper {
+  width: 300px !important;
+  height: 300px !important;
+
+  canvas {
+    width: 300px !important;
+    height: 300px !important;
+    opacity: 0.25;
+  }
+}
+.popup-plane-photo-box {
+  & a {
+    display: block;
+    float: left;
+    width: calc(33.3% - 10px);
+    height: 170px;
+
+    & img {
+      display: block;
+      width: 100%;
+      height: 170px;
+      object-fit: cover;
+    }
+  }
+}
+.hero-gran {
+  background: #131e41 url('/assets/images/bg_hero.jpg') center -150px / cover no-repeat;
+  background-position-y: bottom;
+  background-position: 12rem -5rem;
+  background-size: 82rem;
+  @media (max-width: 425px) {
+    background-position: 55% 3px;
+    background-size: 47rem;
+  }
+  // add after
+}
+// Odometer
+.odometer-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2rem 0;
+}
+
+.main__miles-text {
+  font-size: 10px;
+  line-height: 12px;
+  font-weight: 400;
+  text-transform: uppercase;
+  text-align: center;
+  letter-spacing: 9px;
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.main__miles-num {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end; // 🔥 daha iyi hizalama
+
+  font-size: clamp(32px, 6vw, 80px); // 🔥 responsive
+  line-height: 1;
+  font-weight: 500;
+  color: #fff;
+
+  &::after {
+    content: 'miles';
+
+    font-size: clamp(8px, 1.2vw, 12px); // 🔥 responsive
+    line-height: 1.2;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.4);
+
+    margin-left: 0.5rem;
+    margin-bottom: 0.2em; // 🔥 baseline hizalama
+    letter-spacing: 0.2em;
+  }
+}
+
+.odo-separator {
+  display: inline-block;
+}
+
+.odo-digit {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  height: 1em;
+  width: 0.6em;
+  text-align: center;
+
+  .odo-old,
+  .odo-new {
+    display: block;
+    width: 100%;
+    text-align: center;
+    transition: none;
+  }
+
+  .odo-old {
+    position: relative;
+  }
+
+  .odo-new {
+    position: absolute;
+    top: 100%;
+    left: 0;
+  }
+
+  // Animasyon aktifken: eski yukarı kayar, yeni aşağıdan gelir
+  &.odo-roll {
+    .odo-old {
+      animation: odo-slide-up-old 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+    .odo-new {
+      animation: odo-slide-up-new 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+  }
+}
+
+@keyframes odo-slide-up-old {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(-100%);
+  }
+}
+
+@keyframes odo-slide-up-new {
+  0% {
+    transform: translateY(0); // top:100% konumunda
+  }
+  100% {
+    transform: translateY(-100%); // top:0 konumuna gelir
+  }
+}
+
+// Image Slider
+.slider-outer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  max-width: 1100px;
+  margin: 0 auto;
+
+  @media (max-width: 767px) {
+    gap: 8px;
+  }
+}
+
+.slider-wrapper {
+  flex: 1;
+  position: relative;
+  height: 460px;
+  overflow: hidden;
+  border-radius: 8px;
+
+  @media (max-width: 767px) {
+    height: 260px;
+    border-radius: 6px;
+  }
+}
+
+.slider-image {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  overflow: hidden;
+
+  &--in {
+    z-index: 2;
+  }
+
+  &--out {
+    z-index: 1;
+  }
+}
+
+.slider-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to bottom, rgba(19, 30, 65, 0.35) 0%, rgba(19, 30, 65, 0.7) 100%);
+}
+
+.slider-bottom {
+  position: absolute;
+  bottom: 28px;
+  left: 28px;
+  right: 80px;
+  z-index: 2;
+}
+
+.slider-text {
+  font-size: clamp(14px, 1.8vw, 20px);
+  line-height: 1.6;
+  color: #fff;
+  margin-bottom: 18px;
+  max-width: 520px;
+}
+
+.slider-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.slider-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.35);
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition:
+    background 0.3s,
+    transform 0.3s;
+
+  &.active {
+    background: #fff;
+    transform: scale(1.25);
+  }
+}
+
+.slider-arrow {
+  flex-shrink: 0;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.25s,
+    border-color 0.25s;
+
+  @media (max-width: 767px) {
+    width: 32px;
+    height: 32px;
+    flex-shrink: 0;
+
+    svg {
+      width: 13px;
+      height: 13px;
+    }
+  }
+
+  &:hover {
+    background: rgba(26, 86, 219, 0.35);
+    border-color: rgba(26, 86, 219, 0.7);
+  }
+}
+
+// Slide geçiş animasyonu — panel kayma efekti
+.slide-in-next {
+  animation: panel-in-next 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide-in-prev {
+  animation: panel-in-prev 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide-out-next {
+  animation: panel-out-next 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.slide-out-prev {
+  animation: panel-out-prev 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes panel-in-next {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes panel-in-prev {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes panel-out-next {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-100%);
+  }
+}
+
+@keyframes panel-out-prev {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+// ─── Plane Carousel ──────────────────────────────────────────────
+.planes-header,
+.blog-header {
+  background: linear-gradient(90deg, #000daf 0%, #ffffff 30%, #7c8ee9 60%, #4a8fd4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-align: center;
+  // width: fit-content;
+}
+
+// .planes {
+//   padding-bottom: 4rem;
+//   display: flex;
+//   flex-direction: column;
+//   align-items: center;
+// }
+
+.plane-arrow {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.25s,
+    border-color 0.25s;
+
+  &:hover {
+    background: rgba(26, 86, 219, 0.3);
+    border-color: rgba(26, 86, 219, 0.7);
+  }
+}
+::ng-deep .p-carousel-indicator-active .p-carousel-indicator-button {
+  background: linear-gradient(
+    225deg,
+    #e8c97a 0%,
+    #d4795c 30%,
+    #9b59b6 60%,
+    #4a8fd4 100%
+  ) !important ;
+  // transform: scale(1.25);
+}
+.plane-card {
+  // flex-shrink: 0;
+  border-radius: 12px;
+  // padding: 2rem 2rem 1.5rem;
+  // display: flex;
+  // flex-direction: column;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &__subtitle {
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: lowercase;
+    color: rgba(255, 255, 255, 0.45);
+    margin-bottom: 6px;
+  }
+
+  &__name {
+    font-size: clamp(22px, 3vw, 26px);
+    font-weight: 400;
+    line-height: 1.15;
+    background: linear-gradient(90deg, #e8c97a 0%, #d4795c 30%, #9b59b6 60%, #4a8fd4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 1rem;
+  }
+
+  &__img-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    // max-width: 250px;
+    margin: 0.5rem 0;
+  }
+
+  &__img {
+    max-width: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+  }
+
+  &__stats {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  // Active (center) card
+  &--active {
+    width: 340px;
+    min-height: 360px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    z-index: 2;
+    cursor: pointer;
+
+    .plane-card__img {
+      max-height: 180px;
+    }
+  }
+  &:hover {
+    border-color: rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.07);
+  }
+
+  // Side cards
+  &--side {
+    width: 340px;
+    min-height: 360px;
+    background: rgba(255, 255, 255, 0.02);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    opacity: 0.6;
+    cursor: pointer;
+    z-index: 1;
+
+    .plane-card__name {
+      font-size: clamp(18px, 2.2vw, 28px);
+    }
+
+    .plane-card__img {
+      max-height: 140px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
+
+  &--left {
+    transform: translateX(40px) scale(0.95);
+  }
+
+  &--right {
+    transform: translateX(-40px) scale(0.95);
+  }
+}
+.blog-img {
+  max-width: 500px;
+}
+
+.plane-stat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  &__val {
+    font-size: clamp(13px, 1.5vw, 17px);
+    font-weight: 500;
+    color: #fff;
+
+    small {
+      font-size: 10px;
+      font-weight: 400;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: rgba(255, 255, 255, 0.6);
+    }
+  }
+
+  &__label {
+    font-size: 11px;
+    color: rgba(255, 255, 255, 0.35);
+    letter-spacing: 0.04em;
+  }
+
+  &--seats {
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  &__icon {
+    flex-shrink: 0;
+  }
+}
+
+.planes-progress {
+  &__track {
+    width: 120px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  &__fill {
+    height: 100%;
+    background: #fff;
+    border-radius: 2px;
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+// ─── Plane Carousel (PrimeNG) ────────────────────────────────────
+// ::ng-deep .plane-primeng-carousel {
+//   display: flex;
+//   flex-direction: column;
+//   padding: 50px;
+//   max-width: clamp(300px, 100%, 1573px);
+//   width: 100%;
+//   .p-carousel-content {
+//     overflow: hidden;
+//   }
+
+//   // Hide default indicators
+//   .p-carousel-indicators {
+//     display: none;
+//   }
+
+//   // Style the prev/next buttons
+//   .p-carousel-prev-button,
+//   .p-carousel-next-button {
+//     width: 44px;
+//     height: 44px;
+//     border-radius: 50%;
+//     border: 1.5px solid rgba(255, 255, 255, 0.25) !important;
+//     background: transparent !important;
+//     color: #fff !important;
+//     box-shadow: none !important;
+//     transition:
+//       background 0.25s,
+//       border-color 0.25s;
+
+//     &:hover {
+//       background: rgba(26, 86, 219, 0.3) !important;
+//       border-color: rgba(26, 86, 219, 0.7) !important;
+//     }
+
+//     svg {
+//       width: 18px;
+//       height: 18px;
+//     }
+//   }
+// }
+
+// ─── Plane Carousel ──────────────────────────────────────────────
+.plane-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 16, 38, 0.82);
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: modal-overlay-in 0.25s ease forwards;
+}
+
+@keyframes modal-overlay-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.plane-modal {
+  width: min(1060px, 96vw);
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  background: #0f1a3e;
+  border-radius: 4px;
+  overflow: hidden;
+  animation: modal-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  @media (max-width: 767px) {
+    max-height: 95vh;
+  }
+}
+
+@keyframes modal-slide-in {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.plane-modal__header {
+  position: relative;
+  padding: 2rem 3rem 1.5rem;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.plane-modal__label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.4);
+  margin-bottom: 8px;
+}
+
+.plane-modal__title {
+  font-size: clamp(26px, 4vw, 52px);
+  font-weight: 300;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.plane-modal__close {
+  position: absolute;
+  top: 1.5rem;
+  right: 1.5rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition:
+    background 0.2s,
+    border-color 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.4);
+  }
+}
+
+.plane-modal__body {
+  flex: 1;
+  overflow-y: auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  padding: 2rem 3rem;
+
+  @media (max-width: 767px) {
+    grid-template-columns: 1fr;
+    padding: 1.5rem;
+  }
+
+  // Custom scrollbar
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+  &::-webkit-scrollbar {
+    width: 4px;
+  }
+  &::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  &::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 2px;
+  }
+}
+
+.plane-modal__section-title {
+  font-size: 13px;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.5);
+  margin-bottom: 1rem;
+
+  &.mt-6 {
+    margin-top: 1.5rem;
+  }
+}
+
+// Specs table
+.plane-specs-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  tr {
+    &.plane-specs-table__row--alt td {
+      background: rgba(255, 255, 255, 0.04);
+    }
+  }
+
+  td {
+    padding: 9px 10px;
+    font-size: 13px;
+    line-height: 1.4;
+    vertical-align: middle;
+  }
+}
+
+.plane-specs-table__label {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+  width: 60%;
+}
+
+.plane-specs-table__value {
+  color: #fff;
+  font-weight: 500;
+  text-align: right;
+}
+
+// Layout images
+.plane-layout-img {
+  width: 100%;
+  object-fit: contain;
+  border-radius: 4px;
+  filter: brightness(0.9);
+}
+
+// Footer CTA
+.plane-modal__footer {
+  background: #1a56db;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.plane-modal__cta {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 1.25rem 2rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 400;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.04em;
+  transition: background 0.2s;
+
+  &:hover {
+    background: rgba(255, 255, 255, 0.08);
+    color: #fff;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+// ─── Quote Modal ────────────────────────────────────────────
+.quote-modal-overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(10, 16, 38, 0.75);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+  border-radius: inherit;
+}
+
+.quote-modal {
+  background: #131e41;
+  border-radius: 12px;
+  width: 100%;
+  max-width: 520px;
+  max-height: 90%;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.55);
+}
+
+.quote-modal__body {
+  padding: 1.5rem 2rem 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.quote-modal__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.quote-modal__consent {
+  font-size: 11px;
+  color: rgba(255, 255, 255, 0.45);
+  line-height: 1.5;
+  margin-top: -0.25rem;
+}
+
+.quote-modal__error {
+  color: #f87171;
+  font-size: 13px;
+  margin: 0;
+}
+
+.quote-modal__success {
+  padding: 3rem 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 15px;
+}
+// ─── Benefits ──────────────────────────────────────────────
+.benefits-section {
+  & .benefits-section-title {
+    font-size: clamp(22px, 5.5vw, 88px);
+    line-height: 1.15;
+    font-weight: 500;
+    color: #fff;
+    margin-bottom: 20px;
+    background: linear-gradient(90deg, #9497b5 0%, #ffffff 30%, #7c8ee9 60%, #4a8fd4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    width: fit-content;
+  }
+
+  & .advantages-box {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+    justify-content: center;
+
+    & .advantage-card {
+      // background: rgba(255, 255, 255, 0.04);
+      // border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-top: 1rem;
+      width: 280px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+
+      &__icon {
+        font-size: 28px;
+        color: #4a8fd4;
+        margin-bottom: 12px;
+        width: 40px;
+        height: 40px;
+      }
+
+      &__title {
+        font-size: clamp(16px, 1.8vw, 22px);
+        font-weight: 500;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+
+      &__desc {
+        font-size: clamp(13px, 1.5vw, 17px);
+        color: rgba(255, 255, 255, 0.55);
+        line-height: 1.5;
+      }
+    }
+  }
+  & .advantage-title {
+    background: linear-gradient(90deg, #9497b5 0%, #ffffff 30%, #7c8ee9 60%, #4a8fd4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    width: fit-content;
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-weight: bold;
+  }
+}
+
+// Ask Question Box------------------------------------------------
+.ask-question-box {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+
+  &__icon {
+    font-size: 28px;
+    color: #4a8fd4;
+    margin-bottom: 12px;
+    width: 40px;
+    height: 40px;
+  }
+
+  &__title {
+    font-size: clamp(16px, 1.8vw, 22px);
+    font-weight: bold;
+    color: #fff;
+    margin-bottom: 8px;
+    background: linear-gradient(90deg, #9497b5 0%, #ffffff 30%, #7c8ee9 60%, #4a8fd4 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    width: fit-content;
+  }
+  &__cta {
+    position: relative;
+    display: flex;
+    margin-top: 1rem;
+    padding: 0.75rem 1.5rem;
+    background: linear-gradient(90deg, #131e41 0%, #1c2748 30%, #131e41 60%, #1c2748 100%);
+    border: none;
+    border-radius: 4px;
+    color: #fff;
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #1c2748;
+
+      box-shadow: 0 4px 12px rgb(67 79 137);
+      & svg {
+        position: absolute;
+        right: 0;
+        top: 0;
+        transform: rotate(-45deg);
+      }
+    }
+    & svg {
+      position: absolute;
+      right: 0;
+      // top: 0;
+      transition: all 0.5s ease;
+    }
+  }
+}
+
+// ─── Order Section ──────────────────────────────────────────────
+.order-section {
+  background: #131e41 url('/assets/images/bg_order.jpg ') center top no-repeat;
+  // media mobile
+  @media (max-width: 768px) {
+    background-size: 72rem;
+  }
+}
+
+// ─── Contact Request Modal ────────────────────────────────────
+.contact-request-modal {
+  width: min(480px, 96vw);
+  background: #0f1a3e;
+  border-radius: 4px;
+  overflow: hidden;
+  animation: modal-slide-in 0.3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+
+  .contact-modal__body {
+    padding: 1.5rem 2rem 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+}

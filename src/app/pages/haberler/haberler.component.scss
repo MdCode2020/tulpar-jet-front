@@ -1,0 +1,87 @@
+.haberler-page {
+  min-height: 100vh;
+  background: #0d1733;
+  color: #fff;
+}
+.haberler-hero {
+  padding: 140px 20px 60px;
+  text-align: center;
+  background: linear-gradient(to bottom, #131e41, #0d1733);
+}
+.haberler-hero__title {
+  font-size: clamp(28px, 4vw, 52px);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.haberler-hero__sub {
+  font-size: 16px;
+  color: rgba(255,255,255,0.6);
+}
+.haberler-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 40px 20px 80px;
+}
+.haber-card {
+  border-radius: 16px;
+  overflow: hidden;
+  background: #131e41;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 40px rgba(0,0,0,0.4);
+  }
+}
+.haber-card__img-wrap {
+  display: block;
+  overflow: hidden;
+  height: 200px;
+}
+.haber-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+  .haber-card:hover & { transform: scale(1.05); }
+}
+.haber-card__body {
+  padding: 20px 24px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.haber-card__date {
+  font-size: 12px;
+  color: rgba(255,255,255,0.4);
+  letter-spacing: 0.06em;
+}
+.haber-card__title {
+  font-size: 18px;
+  font-weight: 600;
+  margin: 0;
+  a { color: inherit; text-decoration: none; transition: color 0.2s; }
+  a:hover { color: #60a5fa; }
+}
+.haber-card__desc {
+  font-size: 14px;
+  color: rgba(255,255,255,0.55);
+  line-height: 1.7;
+  margin: 0;
+}
+.haber-card__more {
+  margin-top: 4px;
+  font-size: 13px;
+  color: #60a5fa;
+  text-decoration: none;
+  font-weight: 500;
+  &:hover { text-decoration: underline; }
+}
+.haberler-empty {
+  color: rgba(255,255,255,0.4);
+  text-align: center;
+  grid-column: 1/-1;
+  padding: 40px 0;
+}

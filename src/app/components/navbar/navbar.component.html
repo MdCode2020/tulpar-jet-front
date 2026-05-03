@@ -1,0 +1,116 @@
+<nav class="navbar z-12" [class.scrolled]="scrolled" [class.dark-bg]="!isHomePage">
+  <div class="navbar__inner">
+    <!-- Logo -->
+    <a href="/" class="navbar__logo">Tulpar Jet</a>
+
+    <!-- Desktop links -->
+    <div class="navbar__links">
+      <a
+        routerLink="/home"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="navbar__link"
+        >{{ 'nav.home' | translate }}</a
+      >
+      <a routerLink="/hizmetler" routerLinkActive="active" class="navbar__link">{{
+        'nav.services' | translate
+      }}</a>
+      <a routerLink="/haberler" routerLinkActive="active" class="navbar__link">{{
+        'nav.news' | translate
+      }}</a>
+      <a routerLink="/sss" routerLinkActive="active" class="navbar__link">{{
+        'nav.faq' | translate
+      }}</a>
+      <a routerLink="/iletisim" routerLinkActive="active" class="navbar__link">{{
+        'nav.contact' | translate
+      }}</a>
+    </div>
+
+    <!-- Right -->
+    <div class="navbar__right">
+      <!-- Dil seçici -->
+      <div class="lang-wrapper">
+        <button
+          class="lang-btn"
+          (click)="toggleLang($event)"
+          [class.open]="langOpen"
+          aria-label="Dil seç"
+        >
+          <!-- Globe icon -->
+          <svg
+            width="18"
+            height="18"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.6"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path
+              d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"
+            />
+          </svg>
+          <span class="lang-current">{{ currentLang.label }}</span>
+          <svg class="lang-chevron" width="12" height="12" viewBox="0 0 12 12" fill="none">
+            <path
+              d="M2 4l4 4 4-4"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        @if (langOpen) {
+          <div class="lang-dropdown" (click)="$event.stopPropagation()">
+            @for (lang of langs; track lang) {
+              <button
+                class="lang-option"
+                [class.active]="lang.id === currentLang.id"
+                (click)="selectLang(lang, $event)"
+              >
+                {{ lang.label }}
+              </button>
+            }
+          </div>
+        }
+      </div>
+
+      <!-- Hamburger (mobile) -->
+      <button
+        class="navbar__hamburger"
+        (click)="toggleMenu()"
+        [class.open]="isOpen"
+        aria-label="Menü"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  @if (isOpen) {
+    <div class="navbar__mobile">
+      <a routerLink="/" (click)="isOpen = false" class="navbar__mobile-link">{{
+        'nav.home' | translate
+      }}</a>
+      <a routerLink="/hizmetler" (click)="isOpen = false" class="navbar__mobile-link">{{
+        'nav.services' | translate
+      }}</a>
+      <a routerLink="/haberler" (click)="isOpen = false" class="navbar__mobile-link">{{
+        'nav.news' | translate
+      }}</a>
+      <a routerLink="/sss" (click)="isOpen = false" class="navbar__mobile-link">{{
+        'nav.faq' | translate
+      }}</a>
+      <a routerLink="/iletisim" (click)="isOpen = false" class="navbar__mobile-link">{{
+        'nav.contact' | translate
+      }}</a>
+    </div>
+  }
+</nav>

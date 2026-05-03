@@ -1,0 +1,871 @@
+<app-navbar></app-navbar>
+<!-- <app-hero></app-hero> -->
+
+<!-- Gradient geçiş: beyaz/bulut → koyu mavi -->
+<div
+  class="h-32 md:h-48 -mt-32 md:-mt-48 relative z-10"
+  style="background: linear-gradient(to bottom, rgba(255, 255, 255, 0) 0%, #131e41 100%)"
+></div>
+
+<!-- HERO SECTION -->
+<div>
+  <div
+    class="hero-gran w-full min-h-screen relative flex flex-col items-center overflow-hidden pb-10"
+  >
+    <div
+      class="absolute top-0 left-0 w-full h-32 md:h-48 z-0"
+      style="background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, #131e41 100%)"
+    ></div>
+    <div class="container mx-auto px-4">
+      <!-- <div
+        class="uppercase text-center my-[40px] md:my-[80px] tracking-[10px] md:tracking-[34px] font-brutal text-[10px] leading-[12px] font-bold text-[#fff]/75"
+      >
+        {{ 'home.businessAviation' | translate }}
+      </div> -->
+
+      <div class="hero__logo flex justify-center">
+        <!-- logo -->
+      </div>
+    </div>
+    <!-- HERO FORM -->
+    <div class="jet-form mt-[21rem] md:mt-[35rem] w-full max-w-5xl z-10 rounded-xl p-4">
+      <div class="p-4">
+        <!-- EXTRA FLIGHTS -->
+        @for (flight of flights; track $index) {
+          <div
+            class="extra-flight relative mt-6 grid grid-cols-1 lg:grid-cols-7 md:grid-cols-6 gap-6 items-center pr-[3rem]"
+          >
+            <div class="md:col-span-3 lg:col-span-2">
+              <p-floatlabel>
+                <input
+                  [tabIndex]="2"
+                  pInputText
+                  [id]="'ef_from_' + $index"
+                  [(ngModel)]="flight.fromWhere"
+                  autocomplete="off"
+                />
+                <label [for]="'ef_from_' + $index">{{ 'home.from' | translate }}</label>
+              </p-floatlabel>
+            </div>
+            <div class="md:col-span-3 lg:col-span-2">
+              <p-floatlabel>
+                <input
+                  pInputText
+                  [id]="'ef_to_' + $index"
+                  [(ngModel)]="flight.toWhere"
+                  autocomplete="off"
+                />
+                <label [for]="'ef_to_' + $index">{{ 'home.to' | translate }}</label>
+              </p-floatlabel>
+            </div>
+            <div class="md:col-span-4 lg:col-span-2">
+              <p-floatlabel>
+                <p-datepicker
+                  [inputId]="'ef_date_' + $index"
+                  [(ngModel)]="flight.selectedDate"
+                  [showTime]="true"
+                  appendTo="body"
+                  [showIcon]="true"
+                  dateFormat="dd/mm/yy"
+                  hourFormat="24"
+                ></p-datepicker>
+                <label [for]="'ef_date_' + $index">{{ 'home.dateTime' | translate }}</label>
+              </p-floatlabel>
+            </div>
+            <!-- Kişi sayısı -->
+            <div class="md:col-span-2 lg:col-span-1">
+              <p-floatlabel>
+                <!-- // add number input with plus and minus inside icon spiners -->
+                <input
+                  pInputText
+                  id="passengers"
+                  type="number"
+                  [(ngModel)]="flight.passengers"
+                  min="1"
+                  autocomplete="off"
+                />
+                <label for="passengers">{{ 'home.passengers' | translate }}</label>
+              </p-floatlabel>
+            </div>
+            @if ($index > 0) {
+              <div class="absolute right-[0px] h-full flex items-center pt-[1rem]">
+                <button type="button" class="remove-flight-btn" (click)="removeFlight($index)">
+                  <i class="pi pi-times"></i>
+                </button>
+              </div>
+            }
+          </div>
+        }
+
+        <!-- ADD FLIGHT BUTTON -->
+        <div class="mt-4">
+          <button
+            type="button"
+            class="add-flight-btn flex items-center gap-2"
+            (click)="addFlight()"
+          >
+            <i class="pi pi-plus"></i>
+            <span>{{ 'home.addFlight' | translate }}</span>
+          </button>
+        </div>
+      </div>
+      <!-- // uçuş gönder butonu -->
+      <div class="mt-4 flex flex-col items-end gap-2">
+        <button
+          type="button"
+          class="submit-btn btn flex items-center gap-2 border-[#798cb37a] border bg-transparent text-[#64748b] px-[0.75rem] py-[0.5rem] rounded-[5px]"
+          (click)="openContactModal()"
+        >
+          <span>{{ 'home.requestFlight' | translate }}</span>
+          <i class="pi pi-arrow-right text-[10px]"></i>
+        </button>
+        @if (flightValidationError) {
+          <span class="text-[12px] text-red-400">{{ flightValidationError }}</span>
+        }
+      </div>
+    </div>
+    <!-- Globe -->
+    <!-- <div class="absolute top-[32rem] md:top-[32rem] lg:top-[34rem] left-1/2 -translate-x-1/2">
+      @if (isBrowser && GlobeComponent) {
+        <ng-container *ngComponentOutlet="GlobeComponent"></ng-container>
+      }
+    </div> -->
+  </div>
+</div>
+
+<!-- CONTACT MODAL -->
+@if (showContactModal) {
+  <div class="plane-modal-overlay" (click)="closeContactModal()">
+    <div class="contact-request-modal" (click)="$event.stopPropagation()">
+      <div class="plane-modal__header">
+        <span class="plane-modal__label">UÇUŞ TALEBİ</span>
+        <h2
+          class="plane-modal__title"
+          style="font-size: clamp(18px, 2.5vw, 28px); font-weight: 400"
+        >
+          İletişim Bilgileriniz
+        </h2>
+        <button class="plane-modal__close" type="button" (click)="closeContactModal()">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M12 4L4 12M4 4l8 8" stroke="white" stroke-width="1.5" stroke-linecap="round" />
+          </svg>
+        </button>
+      </div>
+      <div class="contact-modal__body">
+        @if (submitSuccess) {
+          <div class="flex flex-col items-center gap-4 py-8">
+            <i class="pi pi-check-circle text-[2.5rem] text-green-400"></i>
+            <p class="text-white/75 text-center text-[15px] leading-relaxed">
+              Talebiniz başarıyla alındı!<br />En kısa sürede size dönüş yapılacaktır.
+            </p>
+          </div>
+        } @else {
+          <div class="grid grid-cols-2 gap-3">
+            <p-floatlabel>
+              <input
+                pInputText
+                id="m_firstName"
+                [(ngModel)]="contactInfo.firstName"
+                autocomplete="off"
+              />
+              <label for="m_firstName">İsim</label>
+            </p-floatlabel>
+            <p-floatlabel>
+              <input
+                pInputText
+                id="m_lastName"
+                [(ngModel)]="contactInfo.lastName"
+                autocomplete="off"
+              />
+              <label for="m_lastName">Soyisim</label>
+            </p-floatlabel>
+          </div>
+          <div class="grid grid-cols-2 gap-3">
+            <p-floatlabel>
+              <input
+                pInputText
+                id="m_email"
+                type="email"
+                [(ngModel)]="contactInfo.email"
+                autocomplete="off"
+              />
+              <label for="m_email">E-posta</label>
+            </p-floatlabel>
+            <p-floatlabel>
+              <input
+                pInputText
+                id="m_phone"
+                type="tel"
+                [(ngModel)]="contactInfo.phone"
+                autocomplete="off"
+              />
+              <label for="m_phone">Telefon</label>
+            </p-floatlabel>
+          </div>
+          @if (submitError) {
+            <div class="text-red-400 text-[13px] mt-1">{{ submitError }}</div>
+          }
+          <div class="flex justify-end mt-4">
+            <button
+              type="button"
+              class="plane-modal__cta"
+              style="
+                width: auto;
+                padding: 0.75rem 2.5rem;
+                border-radius: 4px;
+                background: #1a56db;
+                font-size: 14px;
+              "
+              (click)="submitFlightRequest()"
+              [disabled]="submitting"
+            >
+              @if (submitting) {
+                <i class="pi pi-spin pi-spinner"></i>
+                <span>Gönderiliyor...</span>
+              } @else {
+                <span>Gönder</span>
+                <i class="pi pi-send text-[12px]"></i>
+              }
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+<!-- VIDEO SECTION -->
+<div class="bg-[#131e41] py-10 md:py-16">
+  <div class="container mx-auto px-4">
+    <div class="main__video" id="hook">
+      <div
+        class="font-brutal text-[10px] leading-[12px] font-normal uppercase text-center tracking-[10px] md:tracking-[34px] text-white/40"
+      >
+        {{ 'home.video' | translate }}
+      </div>
+
+      <div class="relative h-[250px] md:h-[550px] mt-[20px] md:mt-[40px] max-w-7xl mx-auto">
+        <iframe
+          class="w-full h-full rounded-lg"
+          src="https://www.youtube.com/embed/rjCBfwl026o"
+          frameborder="0"
+          allowfullscreen
+        ></iframe>
+        <div
+          class="main__video-overlay shadow-[0_0_20px_7px_#131e41] bg-[#131e41] p-[10px] rounded-[7px] absolute left-4 md:left-[27px] bottom-[-1rem] md:bottom-[-45px]"
+        >
+          <div
+            class="font-brutal text-[28px] md:text-[70px] leading-[32px] md:leading-[56px] font-medium mb-2 md:mb-[20px] text-white"
+          >
+            {{ 'home.videoTitle' | translate }}
+          </div>
+
+          <div
+            class="font-brutal text-[14px] md:text-[20px] leading-[18px] md:leading-[24px] font-medium text-white"
+          >
+            {{ 'home.videoSince' | translate }}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ODOMETER SECTION -->
+<div class="bg-[#131e41] py-10 md:py-16 relative">
+  <div class="text-center">
+    <div
+      class="main__miles-text text-white/50 text-[10px] tracking-[10px] md:tracking-[34px] uppercase"
+    >
+      {{ 'home.milesText' | translate }}
+    </div>
+
+    <div class="main__miles-num mt-6">
+      @for (d of digits; track $index) {
+        @if (d.char === '.' || d.char === ',') {
+          <span class="odo-separator">{{ d.char }}</span>
+        } @else {
+          <span class="odo-digit" [class.odo-roll]="d.animating">
+            <span class="odo-old">{{ d.prev }}</span>
+            <span class="odo-new">{{ d.char }}</span>
+          </span>
+        }
+      }
+    </div>
+  </div>
+</div>
+<!-- Hakkımızda, Vizyon ve Misyon -->
+<div class="about-tabs-section bg-[#131e41] py-16 md:py-24">
+  <div class="container mx-auto md:px-12 px-4">
+    <div class="flex flex-col md:flex-row gap-10 md:gap-20">
+      <!-- Sol: Tablar -->
+      <div class="about-tabs flex flex-col gap-3 md:w-[220px] shrink-0">
+        <button
+          class="about-tab-btn"
+          [class.active]="activeTab === 'about'"
+          (click)="selectTab('about')"
+        >
+          {{ 'home.about' | translate }}
+        </button>
+        <button
+          class="about-tab-btn"
+          [class.active]="activeTab === 'vision'"
+          (click)="selectTab('vision')"
+        >
+          {{ 'home.vision' | translate }}
+        </button>
+        <button
+          class="about-tab-btn"
+          [class.active]="activeTab === 'mission'"
+          (click)="selectTab('mission')"
+        >
+          {{ 'home.mission' | translate }}
+        </button>
+      </div>
+
+      <!-- Sağ: İçerik -->
+      <div class="about-tab-content flex-1 min-h-[220px]">
+        @if (activeTab === 'about') {
+          <div class="tab-panel" [class.tab-enter]="animatingTab">
+            <div class="tab-label">{{ 'home.about' | translate }}</div>
+            <h2 class="tab-title">{{ aboutUs?.title }}</h2>
+            <p class="tab-text">
+              {{ aboutUs?.description }}
+            </p>
+          </div>
+        }
+
+        @if (activeTab === 'vision') {
+          <div class="tab-panel" [class.tab-enter]="animatingTab">
+            <div class="tab-label">{{ 'home.vision' | translate }}</div>
+            <h2 class="tab-title">{{ vision?.title }}</h2>
+            <p class="tab-text">
+              {{ vision?.description }}
+            </p>
+          </div>
+        }
+
+        @if (activeTab === 'mission') {
+          <div class="tab-panel" [class.tab-enter]="animatingTab">
+            <div class="tab-label">{{ 'home.mission' | translate }}</div>
+            <h2 class="tab-title">{{ mission?.title }}</h2>
+            <p class="tab-text">
+              {{ mission?.description }}
+            </p>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+  <!-- Image Slider -->
+  <div class="img-slider mt-[55rem] relative py-10 md:py-16">
+    <div class="container mx-auto px-4">
+      <div class="slider-outer">
+        <!-- Sol ok - fotoğraf dışında -->
+        <button class="slider-arrow slider-arrow--left" (click)="prevSlide()" aria-label="Önceki">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path
+              d="M11 14L6 9L11 4"
+              stroke="white"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+
+        <!-- Slider görüntü alanı -->
+        <div class="slider-wrapper">
+          <!-- Önceki slide (çıkış animasyonu) -->
+          @if (prevSliderIndex !== null) {
+            <div
+              class="slider-image slider-image--out"
+              [class.slide-out-next]="sliderDir === 'next'"
+              [class.slide-out-prev]="sliderDir === 'prev'"
+              [style.background-image]="'url(' + services[prevSliderIndex].image + ')'"
+            >
+              <div class="slider-overlay"></div>
+            </div>
+          }
+
+          <!-- Mevcut slide (giriş animasyonu) -->
+          <div
+            class="slider-image slider-image--in"
+            [class.slide-in-next]="sliderAnimating && sliderDir === 'next'"
+            [class.slide-in-prev]="sliderAnimating && sliderDir === 'prev'"
+            [style.background-image]="'url(' + services[sliderIndex].image + ')'"
+          >
+            <div class="slider-overlay"></div>
+
+            <!-- Alt sol: metin + dots -->
+            <div class="slider-bottom">
+              <p class="slider-text">{{ services[sliderIndex].text }}</p>
+              <div class="slider-dots">
+                @for (service of services; track $index) {
+                  <button
+                    class="slider-dot"
+                    [class.active]="$index === sliderIndex"
+                    (click)="goSlide($index)"
+                    [attr.aria-label]="'Slide ' + ($index + 1)"
+                  ></button>
+                }
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Sağ ok - fotoğraf dışında -->
+        <button class="slider-arrow slider-arrow--right" (click)="nextSlide()" aria-label="Sonraki">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path
+              d="M7 4L12 9L7 14"
+              stroke="white"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="aviapark-section">
+  <div class="text-center">
+    <h2 class="tab-title">{{ 'home.aviapark' | translate }}</h2>
+    <p class="tab-text max-w-2xl mx-auto">
+      {{ 'home.aviaparkText' | translate }}
+    </p>
+  </div>
+  <!-- Planes -->
+  <div class="planes mt-[20rem] md:mt-[55rem] sm:px-1 lg:px-50 xl:px-50 px-4">
+    <div class="planes-header tab-title">{{ 'home.selectPlane' | translate }}</div>
+
+    <p-carousel
+      [value]="planes"
+      [numVisible]="planes.length >= 3 ? 3 : planes.length"
+      [numScroll]="1"
+      [circular]="true"
+      [showIndicators]="true"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template #item let-plane let-i="index">
+        <div class="plane-card mx-2" (click)="openPlaneModal(plane)">
+          <div class="p-5">
+            <div class="plane-card__subtitle">{{ plane.subtitle }}</div>
+            <h3 class="plane-card__name">{{ plane.name }}</h3>
+            <div class="plane-card__img-wrap">
+              <img [src]="plane.image" [alt]="plane.name" class="plane-card__img" />
+            </div>
+            <div class="plane-card__stats">
+              <div class="plane-stat">
+                <span class="plane-stat__val">{{ plane.range }} <small>km</small></span>
+                <span class="plane-stat__label">{{ 'home.flightRange' | translate }}</span>
+              </div>
+              <div class="plane-stat">
+                <span class="plane-stat__val">{{ plane.year }} <small>yıl</small></span>
+                <span class="plane-stat__label">{{ 'home.releaseYear' | translate }}</span>
+              </div>
+              <div class="plane-stat plane-stat--seats">
+                <span class="plane-stat__val"
+                  >{{ plane.seats }} {{ 'home.seats' | translate }}</span
+                >
+                <svg
+                  class="plane-stat__icon"
+                  width="20"
+                  height="32"
+                  viewBox="0 0 20 32"
+                  fill="none"
+                >
+                  <ellipse
+                    cx="10"
+                    cy="5"
+                    rx="4"
+                    ry="4"
+                    stroke="rgba(255,255,255,0.4)"
+                    stroke-width="1.5"
+                  />
+                  <path
+                    d="M2 28c0-6 3-10 8-10s8 4 8 10"
+                    stroke="rgba(255,255,255,0.4)"
+                    stroke-width="1.5"
+                    stroke-linecap="round"
+                  />
+                </svg>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
+
+    <!-- Progress bar -->
+    <!-- <div class="planes-progress mt-10 flex justify-center">
+      <div class="planes-progress__track">
+        <div
+          class="planes-progress__fill"
+          [style.width.%]="((planeIndex + 1) / planes.length) * 100"
+        ></div>
+      </div>
+    </div> -->
+  </div>
+</div>
+
+<!-- PLANE DETAIL MODAL -->
+@if (selectedPlane) {
+  <div class="plane-modal-overlay" (click)="closePlaneModal()">
+    <div class="plane-modal" (click)="$event.stopPropagation()">
+      <!-- Header -->
+      <div class="plane-modal__header">
+        <span class="plane-modal__label">{{ 'home.selectedPlane' | translate }}</span>
+        <h2 class="plane-modal__title">{{ selectedPlane.name }}</h2>
+        <button class="plane-modal__close" (click)="closePlaneModal()" aria-label="Kapat">
+          <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+            <path
+              d="M3 3L15 15M15 3L3 15"
+              stroke="white"
+              stroke-width="1.8"
+              stroke-linecap="round"
+            />
+          </svg>
+        </button>
+      </div>
+      <div class="popup-plane-photo w-full h-[170px] overflow-hidden margin-y-[40px]">
+        <div class="popup-plane-photo-box w-full h-full flex gap-4 px-4">
+          @if (selectedPlane.subImageUrl) {
+            <a [href]="selectedPlane.subImageUrl" target="_blank">
+              <img class="block w-full h-full object-cover" [src]="selectedPlane.subImageUrl" alt="" />
+            </a>
+          }
+          @if (selectedPlane.subImageUrl2) {
+            <a [href]="selectedPlane.subImageUrl2" target="_blank">
+              <img class="block w-full h-full object-cover" [src]="selectedPlane.subImageUrl2" alt="" />
+            </a>
+          }
+          @if (selectedPlane.subImageUrl3) {
+            <a [href]="selectedPlane.subImageUrl3" target="_blank">
+              <img class="block w-full h-full object-cover" [src]="selectedPlane.subImageUrl3" alt="" />
+            </a>
+          }
+        </div>
+      </div>
+      <!-- Body -->
+      <div class="plane-modal__body">
+        <!-- Left: Specs -->
+        <div class="plane-modal__specs">
+          <div class="plane-modal__section-title">{{ 'home.planeSpecs' | translate }}</div>
+          <table class="plane-specs-table">
+            @for (spec of selectedPlane.specs; track $index) {
+              <tr [class.plane-specs-table__row--alt]="$index % 2 === 1">
+                <td class="plane-specs-table__label">{{ spec.label }}</td>
+                <td class="plane-specs-table__value">{{ spec.value }}</td>
+              </tr>
+            }
+          </table>
+        </div>
+
+        <!-- Right: Layout images -->
+        <div class="plane-modal__layouts">
+          <div class="plane-modal__section-title">{{ 'home.dayLayout' | translate }}</div>
+          <img [src]="selectedPlane.dayImage" alt="day" class="plane-layout-img" />
+
+          <div class="plane-modal__section-title mt-6">{{ 'home.nightLayout' | translate }}</div>
+          <img [src]="selectedPlane.nightImage" alt="night" class="plane-layout-img" />
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="plane-modal__footer">
+        <button class="plane-modal__cta" type="button" (click)="openQuoteModal()">
+          <span>{{ 'home.offerRequest' | translate }}</span>
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            <path
+              d="M4 10h12M12 6l4 4-4 4"
+              stroke="white"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+        </button>
+      </div>
+
+      <!-- Quote Request Modal (nested) -->
+      @if (showQuoteModal) {
+        <div class="quote-modal-overlay" (click)="closeQuoteModal()">
+          <div class="quote-modal" (click)="$event.stopPropagation()">
+            <div class="plane-modal__header">
+              <span class="plane-modal__label">{{ 'home.offerRequest' | translate }}</span>
+              <h2 class="plane-modal__title">{{ selectedPlane.name }}</h2>
+              <button class="plane-modal__close" type="button" (click)="closeQuoteModal()" aria-label="Kapat">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                  <path d="M3 3L15 15M15 3L3 15" stroke="white" stroke-width="1.8" stroke-linecap="round" />
+                </svg>
+              </button>
+            </div>
+
+            @if (quoteSuccess) {
+              <div class="quote-modal__success">
+                <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
+                  <circle cx="24" cy="24" r="24" fill="#22c55e" fill-opacity="0.15"/>
+                  <path d="M14 24l7 7 13-13" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+                <p>Talebiniz alındı, en kısa sürede sizinle iletişime geçeceğiz.</p>
+              </div>
+            } @else {
+              <div class="quote-modal__body">
+                <div class="quote-modal__grid">
+                  <p-floatlabel>
+                    <input pInputText id="q_name" [(ngModel)]="quoteInfo.name" autocomplete="off" />
+                    <label for="q_name">{{ 'home.name' | translate }}</label>
+                  </p-floatlabel>
+
+                  <p-floatlabel>
+                    <input pInputText id="q_phone" [(ngModel)]="quoteInfo.phone" autocomplete="off" />
+                    <label for="q_phone">{{ 'home.phone' | translate }}</label>
+                  </p-floatlabel>
+
+                  <p-floatlabel>
+                    <input pInputText id="q_from" [(ngModel)]="quoteInfo.fromWhere" autocomplete="off" />
+                    <label for="q_from">{{ 'home.from' | translate }}</label>
+                  </p-floatlabel>
+
+                  <p-floatlabel>
+                    <input pInputText id="q_to" [(ngModel)]="quoteInfo.toWhere" autocomplete="off" />
+                    <label for="q_to">{{ 'home.to' | translate }}</label>
+                  </p-floatlabel>
+
+                  <p-floatlabel>
+                    <p-datepicker
+                      inputId="q_date"
+                      [(ngModel)]="quoteInfo.selectedDate"
+                      [showTime]="true"
+                      appendTo="body"
+                      [showIcon]="true"
+                      dateFormat="dd/mm/yy"
+                      hourFormat="24"
+                    ></p-datepicker>
+                    <label for="q_date">{{ 'home.dateTime' | translate }}</label>
+                  </p-floatlabel>
+
+                  <p-floatlabel>
+                    <input pInputText id="q_pax" type="number" min="1" [(ngModel)]="quoteInfo.passengers" autocomplete="off" />
+                    <label for="q_pax">{{ 'home.passengers' | translate }}</label>
+                  </p-floatlabel>
+                </div>
+
+                @if (quoteError) {
+                  <p class="quote-modal__error">{{ quoteError }}</p>
+                }
+
+                <p class="quote-modal__consent">
+                  By submitting your personal data, you agree to its further processing and storage.
+                </p>
+
+                <button
+                  class="plane-modal__cta w-full justify-center"
+                  type="button"
+                  [disabled]="quoteSubmitting"
+                  (click)="submitQuoteRequest()"
+                >
+                  <span>{{ quoteSubmitting ? '...' : ('home.send' | translate) }}</span>
+                  @if (!quoteSubmitting) {
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                      <path d="M4 10h12M12 6l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                  }
+                </button>
+              </div>
+            }
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
+
+<!-- The Benefits -->
+<div class="benefits-section">
+  <div class="text-center flex justify-center items-center flex-col gap-6">
+    <div>
+      <h3 class="benefits-section-title mt-[5rem]">{{ 'benefits.title' | translate }}</h3>
+    </div>
+    <p class="tab-text max-w-2xl mx-auto">
+      {{ 'benefits.text' | translate }}
+    </p>
+    <div class="advantages-box mt-5 lg:mt-70 md:mt-20">
+      <div class="advantage-card">
+        <img src="/assets/images/icon_plane.svg" alt="Avantaj 1" class="advantage-card__icon" />
+        <h4 class="advantage-title">{{ 'benefits.fleet' | translate }}</h4>
+        <p class="tab-text">
+          {{ 'benefits.fleetText' | translate }}
+        </p>
+      </div>
+
+      <div class="advantage-card">
+        <img src="/assets/images/icon_time.svg " alt="Avantaj 2" class="advantage-card__icon" />
+        <h4 class="advantage-title">{{ 'benefits.flexible' | translate }}</h4>
+        <p class="tab-text">
+          {{ 'benefits.flexibleText' | translate }}
+        </p>
+      </div>
+
+      <div class="advantage-card">
+        <img src="/assets/images/icon_ops.svg" alt="Avantaj 3" class="advantage-card__icon" />
+        <h4 class="advantage-title">{{ 'benefits.personalized' | translate }}</h4>
+        <p class="tab-text">
+          {{ 'benefits.personalizedText' | translate }}
+        </p>
+      </div>
+    </div>
+    <!-- ASK QUESTION BOX -->
+    <div class="ask-question-box mt-10">
+      <h4 class="ask-question-box__title">{{ 'benefits.questionTitle' | translate }}</h4>
+      <p class="tab-text mb-6">
+        {{ 'benefits.questionText' | translate }}
+      </p>
+      <button class="ask-question-box__cta">
+        <span>{{ 'benefits.contactUs' | translate }}</span>
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <path
+            d="M4 10h12M12 6l4 4-4 4"
+            stroke="white"
+            stroke-width="1.8"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- The ORDER SECTION -->
+<div class="order-section">
+  <!-- FROM WHERE TO WHERE -->
+  <!-- same form NGprime -->
+  <div class="pt-[20rem] px-[5rem] md:pt-[25rem] lg:pt-[40rem] lg:px-[10rem]">
+    @for (flight of extraFlights; track $index) {
+      <div
+        class="extra-flight mt-4 relative grid grid-cols-1 lg:grid-cols-7 md:grid-cols-6 gap-4 items-center"
+      >
+        <div class="md:col-span-3 lg:col-span-2">
+          <p-floatlabel>
+            <input
+              pInputText
+              [id]="'ef_from_' + $index"
+              [(ngModel)]="flight.fromWhere"
+              autocomplete="off"
+            />
+            <label [for]="'ef_from_' + $index">{{ 'home.from' | translate }}</label>
+          </p-floatlabel>
+        </div>
+        <div class="md:col-span-3 lg:col-span-2">
+          <p-floatlabel>
+            <input
+              pInputText
+              [id]="'ef_to_' + $index"
+              [(ngModel)]="flight.toWhere"
+              autocomplete="off"
+            />
+            <label [for]="'ef_to_' + $index">{{ 'home.to' | translate }}</label>
+          </p-floatlabel>
+        </div>
+        <div class="md:col-span-4 lg:col-span-2">
+          <p-floatlabel>
+            <p-datepicker
+              [inputId]="'ef_date_' + $index"
+              [(ngModel)]="flight.selectedDate"
+              [showTime]="true"
+              appendTo="body"
+              [showIcon]="true"
+              dateFormat="dd/mm/yy"
+              hourFormat="24"
+              [autofocus]="false"
+            ></p-datepicker>
+            <label [for]="'ef_date_' + $index">{{ 'home.dateTime' | translate }}</label>
+          </p-floatlabel>
+        </div>
+        <!-- Kişi sayısı -->
+        <div class="md:col-span-2 lg:col-span-1">
+          <p-floatlabel>
+            <!-- // add number input with plus and minus inside icon spiners -->
+            <input
+              pInputText
+              id="passengers"
+              type="number"
+              [(ngModel)]="flight.passengers"
+              min="1"
+              autocomplete="off"
+            />
+            <label for="passengers">{{ 'home.passengers' | translate }}</label>
+          </p-floatlabel>
+        </div>
+        @if ($index > 0) {
+          <div class="absolute right-[-44px]">
+            <button type="button" class="remove-flight-btn" (click)="removeExtraFlight($index)">
+              <i class="pi pi-times"></i>
+            </button>
+          </div>
+        }
+      </div>
+    }
+    <!-- ADD FLIGHT BUTTON -->
+    <div class="mt-4">
+      <button
+        type="button"
+        class="add-flight-btn flex items-center gap-2"
+        (click)="addExtraFlight()"
+      >
+        <i class="pi pi-plus"></i>
+        <span>{{ 'home.addFlight' | translate }}</span>
+      </button>
+    </div>
+    <div class="mt-6 flex justify-end">
+      <button
+        type="button"
+        class="submit-btn btn flex items-center gap-2 border-[#798cb37a] border bg-transparent text-[#64748b] px-[0.75rem] py-[0.5rem] rounded-[5px]"
+      >
+        <span>{{ 'home.requestFlight' | translate }}</span>
+        <i class="pi pi-arrow-right text-[10px]"></i>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- THE BLOG SLIDER SECTION -->
+<div class="blogs bg-[#131e41] py-16 md:py-24 text-center">
+  <div class="flex justify-center m-4">
+    <h4 class="blog-header tab-title">{{ 'home.newsTitle' | translate }}</h4>
+  </div>
+  @if (apiBlogsLoaded && apiBlogs.length) {
+    <p-carousel
+      [value]="apiBlogs"
+      [numVisible]="2"
+      [numScroll]="1"
+      [circular]="true"
+      [showIndicators]="true"
+      [responsiveOptions]="responsiveOptions"
+    >
+      <ng-template #item let-blog>
+        <div class="plane-card mx-2">
+          <div class="p-5">
+            <div class="plane-card__subtitle">{{ blog.publishedDate | date: 'dd.MM.yyyy' }}</div>
+            <h3 class="plane-card__name">{{ blog.title }}</h3>
+            <div class="plane-card__img-wrap">
+              <img
+                [src]="resolveImageUrl(blog.imageUrl, 'assets/images/blog1.jpg')"
+                [alt]="blog.title"
+                class="plane-card__img blog-img"
+              />
+            </div>
+            <p class="text-sm text-white/60 text-left mt-3 px-1 line-clamp-3">
+              {{ blog.description }}
+            </p>
+          </div>
+        </div>
+      </ng-template>
+    </p-carousel>
+  }
+</div>
+<app-footer></app-footer>

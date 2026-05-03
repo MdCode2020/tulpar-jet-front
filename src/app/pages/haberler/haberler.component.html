@@ -1,0 +1,34 @@
+<app-navbar></app-navbar>
+
+<div class="haberler-page">
+  <div class="haberler-hero">
+    <h1 class="haberler-hero__title">{{ 'news.pageTitle' | translate }}</h1>
+    <p class="haberler-hero__sub">{{ 'news.pageSub' | translate }}</p>
+  </div>
+
+  <div class="haberler-grid">
+    @for (blog of blogs; track blog.id) {
+      <article class="haber-card">
+        <a [routerLink]="['/haberler', blog.id]" class="haber-card__img-wrap">
+          <img
+            [src]="resolveImageUrl(blog.imageUrl, 'assets/images/blog1.jpg')"
+            [alt]="blog.title"
+            class="haber-card__img"
+          />
+        </a>
+        <div class="haber-card__body">
+          <span class="haber-card__date">{{ blog.publishedDate | date:'dd MMMM yyyy' : '' : 'tr' }}</span>
+          <h2 class="haber-card__title">
+            <a [routerLink]="['/haberler', blog.id]">{{ blog.title }}</a>
+          </h2>
+          <p class="haber-card__desc">{{ blog.description | slice:0:150 }}{{ blog.description.length > 150 ? '...' : '' }}</p>
+          <a [routerLink]="['/haberler', blog.id]" class="haber-card__more">{{ 'news.readMore' | translate }}</a>
+        </div>
+      </article>
+    } @empty {
+      <p class="haberler-empty">{{ 'news.empty' | translate }}</p>
+    }
+  </div>
+</div>
+
+<app-footer></app-footer>

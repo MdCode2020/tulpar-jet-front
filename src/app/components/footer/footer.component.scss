@@ -1,0 +1,151 @@
+.footer {
+  background-color: #0d1b3e;
+  color: #fff;
+
+  // ── Tab Başlıkları ─────────────────────────────────────────────
+  &__tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__tab {
+    background: none;
+    border: none;
+    color: #5a6a8a;
+    font-size: clamp(20px, 3vw, 32px);
+    font-weight: 400;
+    padding: 28px 0;
+    cursor: pointer;
+    text-align: center;
+    letter-spacing: 0.02em;
+    transition: color 0.25s ease;
+
+    &:first-child {
+      border-right: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    &--active {
+      color: #ffffff;
+    }
+
+    &:hover:not(&--active) {
+      color: #8899bb;
+    }
+  }
+
+  // ── Konum Bilgileri ────────────────────────────────────────────
+  &__info {
+    text-align: center;
+    padding: 36px 24px 40px;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  &__phone {
+    font-size: clamp(16px, 2vw, 22px);
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    margin-bottom: 10px !important;
+  }
+
+  &__address {
+    font-size: clamp(15px, 1.8vw, 20px);
+    font-weight: 400;
+    margin-bottom: 6px !important;
+  }
+
+  &__email {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+    letter-spacing: 0.02em;
+  }
+
+  // ── Harita ─────────────────────────────────────────────────────
+  &__map {
+    iframe {
+      display: block;
+      width: 100%;
+      height: 280px;
+    }
+  }
+
+  // ── Alt Bar ────────────────────────────────────────────────────
+  &__bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    padding: 20px 40px;
+    background-color: #0b1835;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 24px 20px;
+    }
+  }
+
+  &__copyright {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.55);
+    margin: 0;
+
+    strong {
+      color: #fff;
+      font-weight: 700;
+    }
+  }
+
+  &__nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px 28px;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+      gap: 12px 20px;
+    }
+  }
+
+  &__nav-link {
+    color: #c9a84c;
+    text-decoration: none;
+    font-size: 13px;
+    transition: opacity 0.2s;
+
+    &:hover {
+      opacity: 0.75;
+    }
+  }
+
+  &__social {
+    display: flex;
+    gap: 10px;
+  }
+
+  &__social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    background-color: #1a2a5e;
+    color: #fff;
+    text-decoration: none;
+    transition: background-color 0.2s;
+
+    &:hover {
+      background-color: #2a3d7a;
+    }
+  }
+}
+.hid {
+  display: none !important;
+}

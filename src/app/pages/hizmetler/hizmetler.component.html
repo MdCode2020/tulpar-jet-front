@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+
+<div class="hizmetler-page">
+  <div class="hizmetler-hero">
+    <h1 class="hizmetler-hero__title">{{ 'services.pageTitle' | translate }}</h1>
+    <p class="hizmetler-hero__sub">{{ 'services.pageSub' | translate }}</p>
+  </div>
+
+  <div class="hizmetler-grid">
+    @for (service of services; track service.id) {
+      <div class="hizmet-card">
+        <div
+          class="hizmet-card__img"
+          [style.background-image]="'url(' + resolveImageUrl(service.imageUrl, 'assets/images/slider-1.jpg') + ')'"
+        >
+          <div class="hizmet-card__overlay"></div>
+        </div>
+        <div class="hizmet-card__body">
+          <h2 class="hizmet-card__title">{{ service.title }}</h2>
+          <p class="hizmet-card__desc">{{ service.description | slice:0:120 }}{{ service.description.length > 120 ? '...' : '' }}</p>
+          <a [routerLink]="['/hizmetler', service.id]" class="hizmet-card__btn">
+            {{ 'services.moreInfo' | translate }}
+          </a>
+        </div>
+      </div>
+    } @empty {
+      <p class="hizmetler-empty">{{ 'services.empty' | translate }}</p>
+    }
+  </div>
+</div>
+
+<app-footer></app-footer>

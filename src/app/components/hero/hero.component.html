@@ -1,0 +1,157 @@
+<!-- HERO SECTION -->
+<div class="hero flex justify-center">
+  <section class="hero-bg1 absolute w-full top-0"></section>
+  <section class="hero-bg2"></section>
+  <section class="hero-bg3"></section>
+  <div class="top-[8rem] md:top-[10rem] relative">
+    <div class="heading">
+      <h1>
+        {{ slider?.title }} <span>{{ slider?.titleRed }}</span>
+      </h1>
+    </div>
+    <div class="heading-sub relative z-2">
+      <p class="text-[#798cb3] text-center max-w-2xl mx-auto text-[16px]">
+        {{ slider?.description }}
+      </p>
+    </div>
+  </div>
+
+  <!-- HERO FORM -->
+  <div class="jet-form absolute top-[20rem] md:top-[25rem] w-full max-w-5xl z-11 rounded-xl p-4">
+    <div
+      class="p-4 max-h-[350px] lg:max-h-[300px] md:max-h-[350px] overflow-y-auto overflow-x-hidden"
+    >
+      <!-- EXTRA FLIGHTS -->
+      @for (flight of flights; track $index) {
+        <div
+          class="extra-flight relative mt-4 grid grid-cols-1 lg:grid-cols-7 md:grid-cols-6 gap-4 items-center pr-[3rem]"
+        >
+          <div class="md:col-span-3 lg:col-span-2">
+            <p-floatlabel>
+              <input
+                [tabIndex]="2"
+                pInputText
+                [id]="'ef_from_' + $index"
+                [(ngModel)]="flight.fromWhere"
+                autocomplete="off"
+              />
+              <label [for]="'ef_from_' + $index">Nereden</label>
+            </p-floatlabel>
+          </div>
+          <div class="md:col-span-3 lg:col-span-2">
+            <p-floatlabel>
+              <input
+                pInputText
+                [id]="'ef_to_' + $index"
+                [(ngModel)]="flight.toWhere"
+                autocomplete="off"
+              />
+              <label [for]="'ef_to_' + $index">Nereye</label>
+            </p-floatlabel>
+          </div>
+          <div class="md:col-span-4 lg:col-span-2">
+            <p-floatlabel>
+              <p-datepicker
+                [inputId]="'ef_date_' + $index"
+                [(ngModel)]="flight.selectedDate"
+                [showTime]="true"
+                appendTo="body"
+                [showIcon]="true"
+                dateFormat="dd/mm/yy"
+                hourFormat="24"
+              ></p-datepicker>
+              <label [for]="'ef_date_' + $index">Tarih & Saat</label>
+            </p-floatlabel>
+          </div>
+          <!-- Kişi sayısı -->
+          <div class="md:col-span-2 lg:col-span-1">
+            <p-floatlabel>
+              <!-- // add number input with plus and minus inside icon spiners -->
+              <input
+                pInputText
+                id="passengers"
+                type="number"
+                [(ngModel)]="flight.passengers"
+                min="1"
+                autocomplete="off"
+              />
+              <label for="passengers">Yolcu Sayısı</label>
+            </p-floatlabel>
+          </div>
+          @if ($index > 0) {
+            <div class="absolute right-[0px] h-full flex items-center pt-[1rem]">
+              <button type="button" class="remove-flight-btn" (click)="removeFlight($index)">
+                <i class="pi pi-times"></i>
+              </button>
+            </div>
+          }
+        </div>
+      }
+
+      <!-- ADD FLIGHT BUTTON -->
+      <div class="mt-4">
+        <button type="button" class="add-flight-btn flex items-center gap-2" (click)="addFlight()">
+          <i class="pi pi-plus"></i>
+          <span>Uçuş Ekle</span>
+        </button>
+      </div>
+
+      <!-- KİŞİSEL BİLGİLER PANELİ -->
+      <div class="mt-6 p-4 rounded-lg contact-panel">
+        @if (submitSuccess) {
+          <div class="submit-success">
+            <i class="pi pi-check-circle"></i>
+            <span>Talebiniz başarıyla alındı! En kısa sürede size dönüş yapılacaktır.</span>
+          </div>
+        } @else {
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <!-- İsim / Soyisim -->
+            <div class="grid grid-cols-2 gap-2">
+              <p-floatlabel>
+                <input pInputText id="firstName" [(ngModel)]="contactInfo.firstName" autocomplete="off" />
+                <label for="firstName">İsim</label>
+              </p-floatlabel>
+              <p-floatlabel>
+                <input pInputText id="lastName" [(ngModel)]="contactInfo.lastName" autocomplete="off" />
+                <label for="lastName">Soyisim</label>
+              </p-floatlabel>
+            </div>
+            <!-- Email / Phone -->
+            <div class="grid grid-cols-2 gap-2">
+              <p-floatlabel>
+                <input pInputText id="contactEmail" type="email" [(ngModel)]="contactInfo.email" autocomplete="off" />
+                <label for="contactEmail">E-posta</label>
+              </p-floatlabel>
+              <p-floatlabel>
+                <input pInputText id="contactPhone" type="tel" [(ngModel)]="contactInfo.phone" autocomplete="off" />
+                <label for="contactPhone">Telefon</label>
+              </p-floatlabel>
+            </div>
+          </div>
+          @if (submitError) {
+            <div class="submit-error mt-3">{{ submitError }}</div>
+          }
+        }
+      </div>
+    </div>
+    <!-- // uçuş gönder butno-->
+    @if (!submitSuccess) {
+      <div class="mt-4 flex justify-end">
+        <button
+          type="button"
+          class="submit-btn btn flex items-center gap-2 border-[#798cb37a] border bg-transparent text-[#64748b] px-[0.75rem] py-[0.5rem] rounded-[5px]"
+          (click)="submitFlightRequest()"
+          [disabled]="submitting"
+        >
+          @if (submitting) {
+            <i class="pi pi-spin pi-spinner text-[12px]"></i>
+            <span>Gönderiliyor...</span>
+          } @else {
+            <span>Uçuş İsteyin</span>
+            <i class="pi pi-arrow-right text-[10px]"></i>
+          }
+        </button>
+      </div>
+    }
+  </div>
+</div>

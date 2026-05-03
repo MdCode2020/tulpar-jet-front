@@ -1,0 +1,32 @@
+<app-navbar></app-navbar>
+
+<div class="detail-page">
+  @if (loading) {
+    <div class="detail-loading">{{ 'common.loading' | translate }}</div>
+  } @else if (notFound || !blog) {
+    <div class="detail-not-found">
+      <p>{{ 'news.notFound' | translate }}</p>
+      <a routerLink="/haberler" class="detail-back">{{ 'news.back' | translate }}</a>
+    </div>
+  } @else {
+    <div
+      class="detail-hero"
+      [style.background-image]="'url(' + resolveImageUrl(blog.imageUrl, 'assets/images/blog1.jpg') + ')'"
+    >
+      <div class="detail-hero__overlay"></div>
+      <div class="detail-hero__content">
+        <span class="detail-hero__date">{{ blog.publishedDate | date:'dd MMMM yyyy' : '' : 'tr' }}</span>
+        <h1 class="detail-hero__title">{{ blog.title }}</h1>
+      </div>
+    </div>
+
+    <div class="detail-body">
+      <a routerLink="/haberler" class="detail-back">{{ 'news.back' | translate }}</a>
+      <div class="detail-content">
+        <p class="detail-description">{{ blog.description }}</p>
+      </div>
+    </div>
+  }
+</div>
+
+<app-footer></app-footer>

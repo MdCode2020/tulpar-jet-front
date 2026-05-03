@@ -1,0 +1,31 @@
+<app-navbar></app-navbar>
+
+<div class="detail-page">
+  @if (loading) {
+    <div class="detail-loading">{{ 'common.loading' | translate }}</div>
+  } @else if (notFound || !service) {
+    <div class="detail-not-found">
+      <p>{{ 'services.notFound' | translate }}</p>
+      <a routerLink="/hizmetler" class="detail-back">{{ 'services.back' | translate }}</a>
+    </div>
+  } @else {
+    <div
+      class="detail-hero"
+      [style.background-image]="'url(' + resolveImageUrl(service.imageUrl, 'assets/images/slider-1.jpg') + ')'"
+    >
+      <div class="detail-hero__overlay"></div>
+      <div class="detail-hero__content">
+        <h1 class="detail-hero__title">{{ service.title }}</h1>
+      </div>
+    </div>
+
+    <div class="detail-body">
+      <a routerLink="/hizmetler" class="detail-back">{{ 'services.back' | translate }}</a>
+      <div class="detail-content">
+        <p class="detail-description">{{ service.description }}</p>
+      </div>
+    </div>
+  }
+</div>
+
+<app-footer></app-footer>

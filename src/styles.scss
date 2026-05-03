@@ -1,1 +1,208 @@
-/* You can add global styles to this file, and also import other style files */
+@use "tailwindcss" as *;
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
+
+// add font-family: "Montserrat"; for all text elements in the app
+* {
+  font-family: 'Playfair Display', sans-serif;
+}
+
+button{
+  cursor: pointer;
+}
+
+input.p-inputtext::placeholder,
+.p-inputtext::placeholder {
+  font-size: 13px !important;
+}
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #155dfc12; // arka plan
+}
+
+::-webkit-scrollbar-thumb {
+  background: #121e41; // scroll rengi
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #d97706;
+}
+.p-datepicker-panel {
+  background: linear-gradient(to bottom, #131e42, #131e429e) !important;
+  border: none !important;
+  color: #ffffff !important;
+}
+.p-datepicker-select-year,
+.p-datepicker-select-month,
+.p-datepicker-month,
+.p-datepicker-year,
+.p-datepicker-title,
+.p-datepicker-weekday,
+.p-datepicker-day {
+  color: #ffffff !important;
+}
+.p-datepicker-today > .p-datepicker-day{
+  background-color: #fff !important;
+  color: #32466e !important;
+}
+.p-datepicker-select-year:hover,
+.p-datepicker-select-month:hover,
+.p-datepicker-month:hover,
+.p-datepicker-year:hover,
+.p-datepicker-day:hover {
+  color: #32466e !important;
+  background-color: #fffffff8 !important;
+}
+.p-datepicker-year-selected {
+  background-color: #32466e !important;
+  color: #fff !important;
+}
+.p-datepicker-header {
+  background: transparent !important;
+}
+.p-datepicker{
+  width: 100% !important;
+  justify-content: space-between;
+}
+.p-datepicker {
+  background: transparent !important;
+  border: 1px solid #798cb3 !important;
+  border-radius: 5px !important;
+
+  & .p-datepicker-input,
+  & .p-datepicker-dropdown {
+    background: transparent !important;
+    border: none !important;
+    padding-right: 5px !important;
+  }
+  & :focus {
+    border-color: #32466e !important;
+    outline: none;
+  }
+}
+:host .p-datepicker:has(.p-datepicker-input:focus),
+:host .p-datepicker:has(.p-datepicker-dropdown:focus) {
+  border: 1px solid #32466e !important;
+  box-shadow: 0 0 5px #32466e66 !important;
+}
+.p-floatlabel:has(input:focus) label {
+  color: #32466e !important;
+  font-weight: 600 !important;
+}
+.p-floatlabel label {
+  font-size: 14px !important;
+}
+.p-inputtext {
+  background: transparent !important;
+  border: 1px solid #798cb3 !important;
+  padding: 0.5rem 0.75rem !important;
+  width: 100% !important;
+  color: #32466e !important;
+  // and focus state
+  & :focus {
+    border-color: #32466e !important;
+    outline: none;
+    box-shadow: 0 0 5px #32466e66 !important;
+  }
+
+  &::placeholder {
+    font-size: 1px !important;
+  }
+}
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+.p-inputtext:enabled:focus{
+  border-color: #32466e !important;
+  outline: none;
+  box-shadow: 0 0 5px #32466e66 ;
+}
+
+/* ✈️ Uçuş Ekle / Kaldır butonları */
+.add-flight-btn {
+  background: transparent;
+  border: 1px dashed #798cb3;
+  border-radius: 8px;
+  padding: 0.45rem 1rem;
+  color: #798cb3;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  i {
+    font-size: 12px;
+  }
+
+  &:hover {
+    border-color: #32466e;
+    color: #32466e;
+    background: #32466e12;
+  }
+}
+.remove-flight-btn {
+  background: transparent;
+  border: 1px solid #c0392b44;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #c0392b99;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  i {
+    font-size: 12px;
+  }
+
+  &:hover {
+    background: #c0392b15;
+    border-color: #c0392b;
+    color: #c0392b;
+  }
+}
+.submit-btn{
+  transition: all 0.2s ease;
+  &:hover {
+    background: #32466e;
+    color: #fff;
+  }
+}
+
+// RTL (Arabic) overrides
+[dir="rtl"] {
+  .navbar__links { flex-direction: row-reverse; }
+  .navbar__mobile { direction: rtl; text-align: right; }
+  .navbar__mobile-link { text-align: right; display: block; }
+  .about-tabs { text-align: right; }
+  .about-tab-content { text-align: right; }
+  .tab-text { text-align: right; }
+  .slider-bottom { right: auto; left: 20px; }
+  .hizmetler-hero,
+  .haberler-hero,
+  .faq-hero,
+  .iletisim-hero { direction: rtl; text-align: right; }
+  .info-card { flex-direction: row-reverse; text-align: right; }
+  .iletisim-form { direction: rtl; text-align: right; }
+  .form-group label { text-align: right; }
+  .faq-item__btn { flex-direction: row-reverse; }
+  .detail-back { direction: rtl; }
+  .haber-card__body,
+  .hizmet-card__body { text-align: right; }
+  .plane-modal__body { direction: rtl; }
+  .plane-modal__header { direction: rtl; text-align: right; }
+  .plane-specs-table__label,
+  .plane-specs-table__value { text-align: right; }
+  .advantage-card { text-align: right; }
+  .ask-question-box { text-align: right; }
+  .extra-flight { direction: rtl; }
+  .add-flight-btn,
+  .submit-btn { direction: rtl; }
+}
