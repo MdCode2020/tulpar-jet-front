@@ -4,9 +4,3 @@
 
 [[plugins]]
   package = "@netlify/angular-runtime"
-
-[[redirects]]
-  from = "/*"
-  to = "/.netlify/functions/angular-ssr"
-  status = 200
-  force = false
