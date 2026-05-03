@@ -8,3 +8,8 @@
 [[edge_functions]]
   path = "/*"
   function = "angular-ssr"
+
+[[redirects]]
+  from = "/"
+  to = "/home"
+  status = 302
