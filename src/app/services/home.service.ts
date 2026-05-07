@@ -5,6 +5,7 @@ import { Slider } from '../core/slider';
 import { Airplane } from '../core/airplane';
 import { Blog } from '../core/blog';
 import { Service } from '../core/service';
+import { SocialLinks } from '../core/socialLinks';
 import { environment } from '../../environments/environment';
 
 @Injectable({
@@ -48,6 +49,10 @@ export class HomeService {
 
   getServiceById(id: number): Observable<Service> {
     return this._http.get<Service>(`${this.apiUrl}/service/${id}`);
+  }
+
+  getSocialLinks(): Observable<SocialLinks> {
+    return this._http.get<SocialLinks>(`${this.apiUrl}/sociallinks`);
   }
 }
 

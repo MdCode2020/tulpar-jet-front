@@ -1,4 +1,4 @@
-@use "tailwindcss" as *;
+@use 'tailwindcss' as *;
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display&display=swap');
 
 // add font-family: "Montserrat"; for all text elements in the app
@@ -6,7 +6,7 @@
   font-family: 'Playfair Display', sans-serif;
 }
 
-button{
+button {
   cursor: pointer;
 }
 
@@ -34,6 +34,8 @@ input.p-inputtext::placeholder,
   background: linear-gradient(to bottom, #131e42, #131e429e) !important;
   border: none !important;
   color: #ffffff !important;
+  top: 100% !important;
+  bottom: auto !important;
 }
 .p-datepicker-select-year,
 .p-datepicker-select-month,
@@ -44,7 +46,7 @@ input.p-inputtext::placeholder,
 .p-datepicker-day {
   color: #ffffff !important;
 }
-.p-datepicker-today > .p-datepicker-day{
+.p-datepicker-today > .p-datepicker-day {
   background-color: #fff !important;
   color: #32466e !important;
 }
@@ -63,7 +65,7 @@ input.p-inputtext::placeholder,
 .p-datepicker-header {
   background: transparent !important;
 }
-.p-datepicker{
+.p-datepicker {
   width: 100% !important;
   justify-content: space-between;
 }
@@ -112,18 +114,38 @@ input.p-inputtext::placeholder,
     font-size: 1px !important;
   }
 }
-input[type="number"]::-webkit-inner-spin-button,
-input[type="number"]::-webkit-outer-spin-button {
+input[type='number']::-webkit-inner-spin-button,
+input[type='number']::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: none;
 }
-.p-inputtext:enabled:focus{
+.p-inputtext:enabled:focus {
   border-color: #32466e !important;
   outline: none;
-  box-shadow: 0 0 5px #32466e66 ;
+  box-shadow: 0 0 5px #32466e66;
 }
 
 /* ✈️ Uçuş Ekle / Kaldır butonları */
+.input-icon-wrap {
+  position: relative;
+  width: 100%;
+
+  input {
+    width: 100%;
+    padding-right: 2.2rem !important;
+  }
+
+  .input-icon {
+    position: absolute;
+    right: 0.6rem;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #798cb3;
+    opacity: 0.7;
+  }
+}
+
 .add-flight-btn {
   background: transparent;
   border: 1px dashed #798cb3;
@@ -168,41 +190,101 @@ input[type="number"]::-webkit-outer-spin-button {
     color: #c0392b;
   }
 }
-.submit-btn{
+.submit-btn {
   transition: all 0.2s ease;
   &:hover {
     background: #32466e;
     color: #fff;
   }
 }
+.hero-btn {
+  @media (max-width: 480px) {
+    width: 100%;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    color: #ffffff;
+    background-color: #151f43;
+    border-color: #151f43;
+  }
+}
 
 // RTL (Arabic) overrides
-[dir="rtl"] {
-  .navbar__links { flex-direction: row-reverse; }
-  .navbar__mobile { direction: rtl; text-align: right; }
-  .navbar__mobile-link { text-align: right; display: block; }
-  .about-tabs { text-align: right; }
-  .about-tab-content { text-align: right; }
-  .tab-text { text-align: right; }
-  .slider-bottom { right: auto; left: 20px; }
+[dir='rtl'] {
+  .navbar__links {
+    flex-direction: row-reverse;
+  }
+  .navbar__mobile {
+    direction: rtl;
+    text-align: right;
+  }
+  .navbar__mobile-link {
+    text-align: right;
+    display: block;
+  }
+  .about-tabs {
+    text-align: right;
+  }
+  .about-tab-content {
+    text-align: right;
+  }
+  .tab-text {
+    text-align: right;
+  }
+  .slider-bottom {
+    right: auto;
+    left: 20px;
+  }
   .hizmetler-hero,
   .haberler-hero,
   .faq-hero,
-  .iletisim-hero { direction: rtl; text-align: right; }
-  .info-card { flex-direction: row-reverse; text-align: right; }
-  .iletisim-form { direction: rtl; text-align: right; }
-  .form-group label { text-align: right; }
-  .faq-item__btn { flex-direction: row-reverse; }
-  .detail-back { direction: rtl; }
+  .iletisim-hero {
+    direction: rtl;
+    text-align: right;
+  }
+  .info-card {
+    flex-direction: row-reverse;
+    text-align: right;
+  }
+  .iletisim-form {
+    direction: rtl;
+    text-align: right;
+  }
+  .form-group label {
+    text-align: right;
+  }
+  .faq-item__btn {
+    flex-direction: row-reverse;
+  }
+  .detail-back {
+    direction: rtl;
+  }
   .haber-card__body,
-  .hizmet-card__body { text-align: right; }
-  .plane-modal__body { direction: rtl; }
-  .plane-modal__header { direction: rtl; text-align: right; }
+  .hizmet-card__body {
+    text-align: right;
+  }
+  .plane-modal__body {
+    direction: rtl;
+  }
+  .plane-modal__header {
+    direction: rtl;
+    text-align: right;
+  }
   .plane-specs-table__label,
-  .plane-specs-table__value { text-align: right; }
-  .advantage-card { text-align: right; }
-  .ask-question-box { text-align: right; }
-  .extra-flight { direction: rtl; }
+  .plane-specs-table__value {
+    text-align: right;
+  }
+  .advantage-card {
+    text-align: right;
+  }
+  .ask-question-box {
+    text-align: right;
+  }
+  .extra-flight {
+    direction: rtl;
+  }
   .add-flight-btn,
-  .submit-btn { direction: rtl; }
+  .submit-btn {
+    direction: rtl;
+  }
 }

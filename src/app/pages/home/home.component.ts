@@ -1,5 +1,5 @@
 import { isPlatformBrowser, DatePipe } from '@angular/common';
-import { Component, inject, Inject, OnInit, PLATFORM_ID, Type } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, inject, Inject, OnInit, PLATFORM_ID, Type, ViewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { CarouselModule } from 'primeng/carousel';
@@ -45,7 +45,7 @@ interface ExtraFlight {
   templateUrl: './home.component.html',
   styleUrl: './home.component.scss',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, AfterViewInit {
   contactInfo = { firstName: '', lastName: '', email: '', phone: '' };
   submitting = false;
   submitSuccess = false;
@@ -80,7 +80,20 @@ export class HomeComponent implements OnInit {
   digits: { char: string; prev: string; animating: boolean }[] = [];
   private intervalId: any;
 
+  @ViewChild('logoEl') logoEl!: ElementRef<HTMLDivElement>;
+
+  calendarReady = false;
+
   constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  ngAfterViewInit(): void {
+    if (this.isBrowser) {
+      setTimeout(() => {
+        this.calendarReady = true;
+        this.logoEl?.nativeElement?.focus();
+      }, 300);
+    }
+  }
   responsiveOptions: any[] | undefined;
   async ngOnInit() {
     this.updateDigits(false);

@@ -9,9 +9,28 @@
 
 <!-- HERO SECTION -->
 <div>
-  <div
-    class="hero-gran w-full min-h-screen relative flex flex-col items-center overflow-hidden pb-10"
+  <div class="hero-gran w-full min-h-screen relative flex flex-col items-center pb-10">
+    <div class="hero-main absolute inset-0"></div>
+
+    <div class="hero-main--white-circle absolute inset-0"></div>
+    <div class="hero-main--cloud-1 absolute inset-0"></div>
+    <div class="hero-main--cloud-2 absolute inset-0"></div>
+    <div class="hero-main--cloud-3 absolute inset-0"></div>
+    <div class="hero-main--cloud-4 absolute inset-0"></div>
+    <div class="hero-main--cloud-5 absolute inset-0"></div>
+    <div class="hero-main--airplane absolute inset-0"></div>
+    <!-- <video
+    autoplay
+    muted
+    loop
+    playsinline
+    class="absolute top-0 left-0 w-full h-full object-cover z-0"
   >
+    <source src="/assets/videos/hero.mp4" type="video/mp4" />
+  </video> -->
+
+    <!-- overlay -->
+    <!-- <div class="absolute inset-0 bg-[#131e41]/70 z-10 "></div> -->
     <div
       class="absolute top-0 left-0 w-full h-32 md:h-48 z-0"
       style="background: linear-gradient(to top, rgba(255, 255, 255, 0) 0%, #131e41 100%)"
@@ -23,49 +42,79 @@
         {{ 'home.businessAviation' | translate }}
       </div> -->
 
-      <div class="hero__logo flex justify-center">
+      <div class="hero__logo flex justify-center" #logoEl tabindex="-1">
         <!-- logo -->
       </div>
     </div>
     <!-- HERO FORM -->
-    <div class="jet-form mt-[21rem] md:mt-[35rem] w-full max-w-5xl z-10 rounded-xl p-4">
+    <div
+      class="jet-form mt-[15rem] md:mt-[21rem] md:mt-[35rem] w-full max-w-5xl z-10 rounded-xl p-4"
+    >
       <div class="p-4">
         <!-- EXTRA FLIGHTS -->
         @for (flight of flights; track $index) {
           <div
-            class="extra-flight relative mt-6 grid grid-cols-1 lg:grid-cols-7 md:grid-cols-6 gap-6 items-center pr-[3rem]"
+            class="extra-flight relative mt-11 md:mt-6 grid grid-cols-2 lg:grid-cols-7 md:grid-cols-6 gap-6 items-center md:pr-[3rem]"
           >
-            <div class="md:col-span-3 lg:col-span-2">
+            <div class="col-span-1 md:col-span-3 lg:col-span-2">
               <p-floatlabel>
-                <input
-                  [tabIndex]="2"
-                  pInputText
-                  [id]="'ef_from_' + $index"
-                  [(ngModel)]="flight.fromWhere"
-                  autocomplete="off"
-                />
+                <div class="input-icon-wrap">
+                  <input
+                    [tabIndex]="2"
+                    pInputText
+                    [id]="'ef_from_' + $index"
+                    [(ngModel)]="flight.fromWhere"
+                    autocomplete="off"
+                  />
+                  <!-- takeoff: uçak üst sağa bakıyor -->
+                  <svg
+                    class="input-icon"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <g transform="rotate(45 12 12)">
+    <path d="M21 16V14L13 9V3.5C13 2.67 12.33 2 11.5 2C10.67 2 10 2.67 10 3.5V9L2 14V16L10 13.5V19L8 20.5V22L11.5 21L15 22V20.5L13 19V13.5L21 16Z"/>
+  </g>
+                  </svg>
+                </div>
                 <label [for]="'ef_from_' + $index">{{ 'home.from' | translate }}</label>
               </p-floatlabel>
             </div>
-            <div class="md:col-span-3 lg:col-span-2">
+            <div class="col-span-1 md:col-span-3 lg:col-span-2">
               <p-floatlabel>
-                <input
-                  pInputText
-                  [id]="'ef_to_' + $index"
-                  [(ngModel)]="flight.toWhere"
-                  autocomplete="off"
-                />
+                <div class="input-icon-wrap">
+                  <input
+                    pInputText
+                    [id]="'ef_to_' + $index"
+                    [(ngModel)]="flight.toWhere"
+                    autocomplete="off"
+                  />
+                  <!-- landing: uçak alt sağa bakıyor -->
+                  <svg
+                    class="input-icon"
+                    width="18"
+                    height="18"
+                    viewBox="0 0 24 24"
+                    fill="currentColor"
+                  >
+                    <g transform="rotate(135 12 12)">
+    <path d="M21 16V14L13 9V3.5C13 2.67 12.33 2 11.5 2C10.67 2 10 2.67 10 3.5V9L2 14V16L10 13.5V19L8 20.5V22L11.5 21L15 22V20.5L13 19V13.5L21 16Z"/>
+  </g>
+                  </svg>
+                </div>
                 <label [for]="'ef_to_' + $index">{{ 'home.to' | translate }}</label>
               </p-floatlabel>
             </div>
-            <div class="md:col-span-4 lg:col-span-2">
+            <div class="col-span-1 md:col-span-4 lg:col-span-2">
               <p-floatlabel>
                 <p-datepicker
                   [inputId]="'ef_date_' + $index"
                   [(ngModel)]="flight.selectedDate"
                   [showTime]="true"
-                  appendTo="body"
                   [showIcon]="true"
+                  [showOnFocus]="calendarReady"
                   dateFormat="dd/mm/yy"
                   hourFormat="24"
                 ></p-datepicker>
@@ -73,22 +122,39 @@
               </p-floatlabel>
             </div>
             <!-- Kişi sayısı -->
-            <div class="md:col-span-2 lg:col-span-1">
+            <div class="col-span-1 md:col-span-2 lg:col-span-1">
               <p-floatlabel>
-                <!-- // add number input with plus and minus inside icon spiners -->
-                <input
-                  pInputText
-                  id="passengers"
-                  type="number"
-                  [(ngModel)]="flight.passengers"
-                  min="1"
-                  autocomplete="off"
-                />
+                <div class="input-icon-wrap">
+                  <input
+                    pInputText
+                    id="passengers"
+                    type="number"
+                    [(ngModel)]="flight.passengers"
+                    min="1"
+                    autocomplete="off"
+                  />
+                  <svg
+                    class="input-icon"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.6"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  >
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+                    <circle cx="12" cy="7" r="4" />
+                  </svg>
+                </div>
                 <label for="passengers">{{ 'home.passengers' | translate }}</label>
               </p-floatlabel>
             </div>
             @if ($index > 0) {
-              <div class="absolute right-[0px] h-full flex items-center pt-[1rem]">
+              <div
+                class="absolute md:top-[0] top-[-4.75rem] right-[0px] h-full flex items-center md:pt-[0]"
+              >
                 <button type="button" class="remove-flight-btn" (click)="removeFlight($index)">
                   <i class="pi pi-times"></i>
                 </button>
@@ -113,7 +179,7 @@
       <div class="mt-4 flex flex-col items-end gap-2">
         <button
           type="button"
-          class="submit-btn btn flex items-center gap-2 border-[#798cb37a] border bg-transparent text-[#64748b] px-[0.75rem] py-[0.5rem] rounded-[5px]"
+          class="submit-btn hero-btn btn flex items-center gap-2 border-[#798cb37a] border bg-transparent text-[#64748b] px-[0.75rem] py-[0.5rem] rounded-[5px]"
           (click)="openContactModal()"
         >
           <span>{{ 'home.requestFlight' | translate }}</span>
@@ -358,7 +424,7 @@
     </div>
   </div>
   <!-- Image Slider -->
-  <div class="img-slider mt-[55rem] relative py-10 md:py-16">
+  <div class="img-slider mt-[8rem] md:mt-[55rem] relative py-10 md:py-16">
     <div class="container mx-auto px-4">
       <div class="slider-outer">
         <!-- Sol ok - fotoğraf dışında -->
@@ -534,17 +600,29 @@
         <div class="popup-plane-photo-box w-full h-full flex gap-4 px-4">
           @if (selectedPlane.subImageUrl) {
             <a [href]="selectedPlane.subImageUrl" target="_blank">
-              <img class="block w-full h-full object-cover" [src]="selectedPlane.subImageUrl" alt="" />
+              <img
+                class="block w-full h-full object-cover"
+                [src]="selectedPlane.subImageUrl"
+                alt=""
+              />
             </a>
           }
           @if (selectedPlane.subImageUrl2) {
             <a [href]="selectedPlane.subImageUrl2" target="_blank">
-              <img class="block w-full h-full object-cover" [src]="selectedPlane.subImageUrl2" alt="" />
+              <img
+                class="block w-full h-full object-cover"
+                [src]="selectedPlane.subImageUrl2"
+                alt=""
+              />
             </a>
           }
           @if (selectedPlane.subImageUrl3) {
             <a [href]="selectedPlane.subImageUrl3" target="_blank">
-              <img class="block w-full h-full object-cover" [src]="selectedPlane.subImageUrl3" alt="" />
+              <img
+                class="block w-full h-full object-cover"
+                [src]="selectedPlane.subImageUrl3"
+                alt=""
+              />
             </a>
           }
         </div>
@@ -597,9 +675,19 @@
             <div class="plane-modal__header">
               <span class="plane-modal__label">{{ 'home.offerRequest' | translate }}</span>
               <h2 class="plane-modal__title">{{ selectedPlane.name }}</h2>
-              <button class="plane-modal__close" type="button" (click)="closeQuoteModal()" aria-label="Kapat">
+              <button
+                class="plane-modal__close"
+                type="button"
+                (click)="closeQuoteModal()"
+                aria-label="Kapat"
+              >
                 <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-                  <path d="M3 3L15 15M15 3L3 15" stroke="white" stroke-width="1.8" stroke-linecap="round" />
+                  <path
+                    d="M3 3L15 15M15 3L3 15"
+                    stroke="white"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                  />
                 </svg>
               </button>
             </div>
@@ -607,8 +695,14 @@
             @if (quoteSuccess) {
               <div class="quote-modal__success">
                 <svg width="48" height="48" viewBox="0 0 48 48" fill="none">
-                  <circle cx="24" cy="24" r="24" fill="#22c55e" fill-opacity="0.15"/>
-                  <path d="M14 24l7 7 13-13" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+                  <circle cx="24" cy="24" r="24" fill="#22c55e" fill-opacity="0.15" />
+                  <path
+                    d="M14 24l7 7 13-13"
+                    stroke="#22c55e"
+                    stroke-width="2.5"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                  />
                 </svg>
                 <p>Talebiniz alındı, en kısa sürede sizinle iletişime geçeceğiz.</p>
               </div>
@@ -621,17 +715,32 @@
                   </p-floatlabel>
 
                   <p-floatlabel>
-                    <input pInputText id="q_phone" [(ngModel)]="quoteInfo.phone" autocomplete="off" />
+                    <input
+                      pInputText
+                      id="q_phone"
+                      [(ngModel)]="quoteInfo.phone"
+                      autocomplete="off"
+                    />
                     <label for="q_phone">{{ 'home.phone' | translate }}</label>
                   </p-floatlabel>
 
                   <p-floatlabel>
-                    <input pInputText id="q_from" [(ngModel)]="quoteInfo.fromWhere" autocomplete="off" />
+                    <input
+                      pInputText
+                      id="q_from"
+                      [(ngModel)]="quoteInfo.fromWhere"
+                      autocomplete="off"
+                    />
                     <label for="q_from">{{ 'home.from' | translate }}</label>
                   </p-floatlabel>
 
                   <p-floatlabel>
-                    <input pInputText id="q_to" [(ngModel)]="quoteInfo.toWhere" autocomplete="off" />
+                    <input
+                      pInputText
+                      id="q_to"
+                      [(ngModel)]="quoteInfo.toWhere"
+                      autocomplete="off"
+                    />
                     <label for="q_to">{{ 'home.to' | translate }}</label>
                   </p-floatlabel>
 
@@ -642,6 +751,7 @@
                       [showTime]="true"
                       appendTo="body"
                       [showIcon]="true"
+                      [showOnFocus]="calendarReady"
                       dateFormat="dd/mm/yy"
                       hourFormat="24"
                     ></p-datepicker>
@@ -649,7 +759,14 @@
                   </p-floatlabel>
 
                   <p-floatlabel>
-                    <input pInputText id="q_pax" type="number" min="1" [(ngModel)]="quoteInfo.passengers" autocomplete="off" />
+                    <input
+                      pInputText
+                      id="q_pax"
+                      type="number"
+                      min="1"
+                      [(ngModel)]="quoteInfo.passengers"
+                      autocomplete="off"
+                    />
                     <label for="q_pax">{{ 'home.passengers' | translate }}</label>
                   </p-floatlabel>
                 </div>
@@ -671,7 +788,13 @@
                   <span>{{ quoteSubmitting ? '...' : ('home.send' | translate) }}</span>
                   @if (!quoteSubmitting) {
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                      <path d="M4 10h12M12 6l4 4-4 4" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                      <path
+                        d="M4 10h12M12 6l4 4-4 4"
+                        stroke="white"
+                        stroke-width="1.8"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                      />
                     </svg>
                   }
                 </button>
@@ -779,9 +902,10 @@
               [showTime]="true"
               appendTo="body"
               [showIcon]="true"
+              [showOnFocus]="calendarReady"
+              [autofocus]="false"
               dateFormat="dd/mm/yy"
               hourFormat="24"
-              [autofocus]="false"
             ></p-datepicker>
             <label [for]="'ef_date_' + $index">{{ 'home.dateTime' | translate }}</label>
           </p-floatlabel>

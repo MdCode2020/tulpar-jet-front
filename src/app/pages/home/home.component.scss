@@ -10,6 +10,10 @@
 // About Tabs Section
 .about-tabs-section {
   background: #131e41 url('/assets/images/bg_columns.jpg') 50% 250px no-repeat;
+  @media (max-width: 480px) {
+    background-size: 700px;
+    background-position: 50% 250px;
+  }
 }
 .aviapark-section {
   background: #131e41 url('/assets/images/bg_avia.jpg') 50% 135px no-repeat;
@@ -138,7 +142,7 @@
   }
 }
 .hero-gran {
-  background: #131e41 url('/assets/images/bg_hero.jpg') center -150px / cover no-repeat;
+  background: #131e41 center -150px / cover no-repeat;
   background-position-y: bottom;
   background-position: 12rem -5rem;
   background-size: 82rem;
@@ -147,6 +151,117 @@
     background-size: 47rem;
   }
   // add after
+}
+.hero-main {
+  background: url('/assets/images/hero-main--A2.png') center 100px no-repeat;
+
+  height: 100%;
+  // opacity: 14%;
+  background-size: contain;
+  background-position-y: 0rem;
+  @media (max-width: 768px) {
+    background-size: cover;
+  }
+}
+.hero-main--airplane {
+  background: url('/assets/images/airplane.png ') no-repeat;
+  background-size: calc(60% + 10rem);
+  height: 100%;
+  background-position-x: calc(50% + 10rem);
+  background-position-y: 7rem;
+  @media (max-width: 768px) {
+    background-size: calc(100% + 10rem);
+    background-position-x: calc(50% + 5rem);
+    background-position-y: 3rem;
+  }
+}
+.hero-main--white-circle {
+  background: url('/assets/images/hero-main--beyaz-yuvarlak.png ') no-repeat;
+  background-position-y: -9rem;
+  background-position-x: center;
+  background-size: contain;
+  opacity: 33%;
+  height: 100%;
+  // opacity: 0.14;
+}
+@keyframes cloud-drift {
+  from {
+    background-position-x: -75%;
+  }
+  to {
+    background-position-x: 175%;
+  }
+}
+
+.hero-main--cloud-1 {
+  background: url('/assets/images/hero-main--cloud-1.png') no-repeat;
+  background-size: 38%;
+  background-position-y: 8%;
+  height: 100%;
+  opacity: 45%;
+  animation: cloud-drift 38s linear infinite;
+  animation-delay: 0s;
+  @media (max-width: 768px) {
+    // background-size: 50%;
+    // background-position-y: 5%;
+    animation-duration: 12s; // 🔥 mobile için daha hızlı drift
+  }
+}
+.hero-main--cloud-2 {
+  background: url('/assets/images/hero-main--cloud-2.png') no-repeat;
+  background-size: 44%;
+  background-position-y: 52%;
+  height: 100%;
+  opacity: 40%;
+  animation: cloud-drift 50s linear infinite;
+  animation-delay: -18s;
+  @media (max-width: 768px) {
+    // background-size: 60%;
+    background-position-y: 19%;
+    animation-duration: 9s; // 🔥 mobile için daha hızlı drift
+  }
+}
+.hero-main--cloud-3 {
+  background: url('/assets/images/hero-main--cloud-3.png') no-repeat;
+  background-size: 34%;
+  background-position-y: 78%;
+  height: 100%;
+  opacity: 35%;
+  animation: cloud-drift 42s linear infinite;
+  animation-delay: -30s;
+  @media (max-width: 768px) {
+    // background-size: 50%;
+    background-position-y: 27%;
+    animation-duration: 10s; // 🔥 mobile için daha hızlı drift
+  }
+}
+.hero-main--cloud-4 {
+  background: url('/assets/images/hero-main--cloud-2.png') no-repeat;
+  background-size: 40%;
+  background-position-y: 68%;
+  height: 100%;
+  opacity: 30%;
+  animation: cloud-drift 45s linear infinite;
+  animation-delay: -12s;
+  @media (max-width: 768px) {
+    // background-size: 60%;
+    background-position-y: 24%;
+    animation-duration: 8s; // 🔥 mobile için daha hızlı drift
+  }
+}
+.hero-main--cloud-5 {
+  background: url('/assets/images/hero-main--cloud-1.png') no-repeat;
+  background-size: 36%;
+  background-position-y: 88%;
+  height: 100%;
+  opacity: 25%;
+  animation: cloud-drift 48s linear infinite;
+  animation-delay: -24s;
+  @media (max-width: 768px) {
+    // background-size: 50%;
+    background-position-y: 29%;
+    animation-duration: 12s; // 🔥 mobile için daha hızlı drift
+  }
 }
 // Odometer
 .odometer-section {
@@ -512,6 +627,9 @@
     max-width: 100%;
     object-fit: contain;
     filter: drop-shadow(0 8px 24px rgba(0, 0, 0, 0.5));
+    @media (min-width: 768px) and (max-width: 1024px) {
+      max-width: 500px;
+    }
   }
 
   &__stats {
@@ -552,7 +670,7 @@
     z-index: 1;
 
     .plane-card__name {
-      font-size: clamp(18px, 2.2vw, 28px);
+      font-size: clamp(15px, 2.2vw, 28px);
     }
 
     .plane-card__img {
@@ -571,9 +689,6 @@
   &--right {
     transform: translateX(-40px) scale(0.95);
   }
-}
-.blog-img {
-  max-width: 500px;
 }
 
 .plane-stat {

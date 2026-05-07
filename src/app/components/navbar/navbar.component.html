@@ -1,12 +1,17 @@
 <nav class="navbar z-12" [class.scrolled]="scrolled" [class.dark-bg]="!isHomePage">
   <div class="navbar__inner">
     <!-- Logo -->
-    <a href="/" class="navbar__logo">Tulpar Jet</a>
+    <a routerLink="/" class="navbar__logo">
+      <img src="/assets/images/tul-logo2.png" alt="Tulpar Jet" class="navbar__logo-img" />
+      <span class="navbar__logo-divider"></span>
+      <span class="nav-spa">{{ 'nav.businessAviation' | translate }}</span>
+      <!-- <div class="header__desc">Business<br> Aviation</div> -->
+    </a>
 
     <!-- Desktop links -->
     <div class="navbar__links">
       <a
-        routerLink="/home"
+        routerLink="/"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: true }"
         class="navbar__link"
@@ -111,6 +116,18 @@
       <a routerLink="/iletisim" (click)="isOpen = false" class="navbar__mobile-link">{{
         'nav.contact' | translate
       }}</a>
+      <!-- Dil seçimi -->
+      <div class="navbar__mobile-langs">
+        @for (lang of langs; track lang) {
+          <button
+            class="navbar__mobile-lang"
+            [class.active]="lang.id === currentLang.id"
+            (click)="selectLang(lang, $event)"
+          >
+            {{ lang.label }}
+          </button>
+        }
+      </div>
     </div>
   }
 </nav>

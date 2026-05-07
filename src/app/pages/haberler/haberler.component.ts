@@ -23,16 +23,14 @@ export class HaberlerComponent implements OnInit {
     return isPlatformBrowser(this.platformId);
   }
   ngOnInit() {
-    if (this.isBrowser) {
-      this.svc.getBlogs().subscribe({
-        next: (data) =>
-          (this.blogs = (data ?? [])
-            .filter((b) => b.isActive && b.isShow)
-            .sort(
-              (a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime(),
-            )),
-      });
-    }
+    this.svc.getBlogs().subscribe({
+      next: (data) =>
+        (this.blogs = (data ?? [])
+          .filter((b) => b.isActive && b.isShow)
+          .sort(
+            (a, b) => new Date(b.publishedDate).getTime() - new Date(a.publishedDate).getTime(),
+          )),
+    });
   }
 
   resolveImageUrl(url: string | null | undefined, fallback: string): string {

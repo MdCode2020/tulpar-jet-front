@@ -1,6 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
+import { HomeService } from '../../services/home.service';
+import { SocialLinks } from '../../core/socialLinks';
 
 interface LocationInfo {
   phone: string;
@@ -16,8 +18,10 @@ interface LocationInfo {
   templateUrl: './footer.component.html',
   styleUrls: ['./footer.component.scss'],
 })
-export class FooterComponent {
+export class FooterComponent implements OnInit {
   activeTab: 'merkez' | 'sube' = 'merkez';
+  currentYear = new Date().getFullYear();
+  socialLinks: SocialLinks | null = null;
 
   locations: Record<'merkez' | 'sube', LocationInfo> = {
     merkez: {
@@ -36,7 +40,14 @@ export class FooterComponent {
     },
   };
 
-  constructor(private sanitizer: DomSanitizer) {}
+  constructor(private sanitizer: DomSanitizer, private homeService: HomeService) {}
+
+  ngOnInit(): void {
+    this.homeService.getSocialLinks().subscribe({
+      next: (links) => (this.socialLinks = links),
+      error: () => (this.socialLinks = null),
+    });
+  }
 
   get currentLocation(): LocationInfo {
     return this.locations[this.activeTab];
