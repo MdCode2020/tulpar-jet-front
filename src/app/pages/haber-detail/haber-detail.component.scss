@@ -3,27 +3,34 @@
   background: #0d1733;
   color: #fff;
 }
-.detail-loading, .detail-not-found {
+.detail-loading,
+.detail-not-found {
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   min-height: 60vh;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   font-size: 18px;
   gap: 16px;
 }
 .detail-hero {
-  min-height: 460px;
+  min-height: 550px;
   background-size: cover;
-  background-position: center;
+  background-position: top;
   position: relative;
   display: flex;
   align-items: flex-end;
 }
 .detail-hero__overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(13,23,51,0.96) 0%, rgba(13,23,51,0.4) 60%, transparent 100%);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(13, 23, 51, 0.96) 0%,
+    rgba(13, 23, 51, 0.4) 60%,
+    transparent 100%
+  );
 }
 .detail-hero__content {
   position: relative;
@@ -34,7 +41,7 @@
 .detail-hero__date {
   display: block;
   font-size: 13px;
-  color: rgba(255,255,255,0.5);
+  color: rgba(255, 255, 255, 0.5);
   letter-spacing: 0.06em;
   margin-bottom: 10px;
 }
@@ -50,16 +57,18 @@
 }
 .detail-back {
   display: inline-block;
-  color: rgba(255,255,255,0.55);
+  color: rgba(255, 255, 255, 0.55);
   font-size: 14px;
   text-decoration: none;
   margin-bottom: 28px;
   transition: color 0.2s;
-  &:hover { color: #fff; }
+  &:hover {
+    color: #fff;
+  }
 }
 .detail-description {
   font-size: 16px;
   line-height: 1.9;
-  color: rgba(255,255,255,0.75);
+  color: rgba(255, 255, 255, 0.75);
   white-space: pre-line;
 }

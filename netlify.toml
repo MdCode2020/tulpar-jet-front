@@ -2,13 +2,6 @@
   command = "ng build"
   publish = "dist/tulpar-jet-front/browser"
 
-[[plugins]]
-  package = "@netlify/angular-runtime"
-
-[[edge_functions]]
-  path = "/*"
-  function = "angular-ssr"
-
 [[redirects]]
   from = "/"
   to = "/home"

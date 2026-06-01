@@ -30,6 +30,8 @@
   "home.dateTime": "Tarih & Saat",
   "home.passengers": "Yolcu Sayısı",
   "home.name": "İsim",
+  "home.lastName": "Soyisim",
+  "home.email": "E-posta",
   "home.phone": "Telefon",
   "home.send": "Gönder",
   "home.aviapark": "Aviapark",

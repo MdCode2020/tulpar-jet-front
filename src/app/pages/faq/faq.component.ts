@@ -1,8 +1,9 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
+import { Inject, PLATFORM_ID } from '@angular/core';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { TranslationService } from '../../services/translation.service';
+import { HomeService } from '../../services/home.service';
 import { TranslatePipe } from '../../core/translate.pipe';
 
 interface FaqItem {
@@ -18,14 +19,27 @@ interface FaqItem {
   templateUrl: './faq.component.html',
   styleUrl: './faq.component.scss'
 })
-export class FaqComponent {
-  private ts = inject(TranslationService);
+export class FaqComponent implements OnInit {
+  private homeService = inject(HomeService);
 
-  items: FaqItem[] = Array.from({ length: 6 }, (_, i) => ({
-    question: this.ts.get(`faq.q${i + 1}`),
-    answer: this.ts.get(`faq.a${i + 1}`),
-    open: false,
-  }));
+  items: FaqItem[] = [];
+
+  constructor(@Inject(PLATFORM_ID) private platformId: Object) {}
+
+  ngOnInit() {
+    const lang = isPlatformBrowser(this.platformId)
+      ? Number(localStorage.getItem('lang') || '2')
+      : 2;
+
+    this.homeService.getFaqs(lang).subscribe({
+      next: data => {
+        this.items = (data || [])
+          .filter((f: any) => f.isActive)
+          .map((f: any) => ({ question: f.question, answer: f.answer, open: false }));
+      },
+      error: () => { this.items = []; }
+    });
+  }
 
   toggle(item: FaqItem) {
     item.open = !item.open;

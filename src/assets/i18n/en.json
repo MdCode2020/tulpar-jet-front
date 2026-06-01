@@ -30,6 +30,8 @@
   "home.dateTime": "Date & Time",
   "home.passengers": "Passengers",
   "home.name": "Name",
+  "home.lastName": "Last Name",
+  "home.email": "Email",
   "home.phone": "Phone",
   "home.send": "Send",
   "home.aviapark": "Aviapark",

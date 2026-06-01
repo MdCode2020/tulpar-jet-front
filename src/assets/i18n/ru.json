@@ -29,6 +29,8 @@
   "home.to": "Куда",
   "home.dateTime": "Дата и время",
   "home.name": "Имя",
+  "home.lastName": "Фамилия",
+  "home.email": "Эл. почта",
   "home.phone": "Телефон",
   "home.send": "Отправить",
   "home.passengers": "Пассажиры",

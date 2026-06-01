@@ -1,6 +1,18 @@
-import { isPlatformBrowser, DatePipe } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, inject, Inject, OnInit, PLATFORM_ID, Type, ViewChild } from '@angular/core';
+import { CommonModule, isPlatformBrowser, DatePipe } from '@angular/common';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  HostListener,
+  inject,
+  Inject,
+  OnInit,
+  PLATFORM_ID,
+  ViewChild,
+} from '@angular/core';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
+import { RouterLink } from '@angular/router';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { CarouselModule } from 'primeng/carousel';
 import { InputTextModule } from 'primeng/inputtext';
@@ -14,24 +26,39 @@ import { Vision } from '../../core/vision';
 import { Mission } from '../../core/mission';
 import { Airplane } from '../../core/airplane';
 import { Blog } from '../../core/blog';
+import { Service } from '../../core/service';
 import { HomeService } from '../../services/home.service';
+import { SeoService } from '../../services/seo.service';
 import { TranslationService } from '../../services/translation.service';
 import { LoaderService } from '../../services/loader.service';
 import { TranslatePipe } from '../../core/translate.pipe';
 import { environment } from '../../../environments/environment';
 import { HttpClient } from '@angular/common/http';
+import { PromoVideo } from '../../core/promoVideo';
 interface ExtraFlight {
   fromWhere: string;
   toWhere: string;
   selectedDate: Date | null;
   passengers?: number | null;
 }
+
+interface PlaneViewModel extends Airplane {
+  image: string;
+  dayImage: string;
+  nightImage: string;
+  subImageUrl: string;
+  subImageUrl2: string;
+  subImageUrl3: string;
+  specs: { label: string; value: string }[];
+}
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
+    CommonModule,
     FormsModule,
     DatePipe,
+    RouterLink,
     NavbarComponent,
     CarouselModule,
     DatePickerModule,
@@ -58,20 +85,21 @@ export class HomeComponent implements OnInit, AfterViewInit {
   mission: Mission | null = null;
   private http = inject(HttpClient);
   _homeService = inject(HomeService);
+  private seoService = inject(SeoService);
   private ts = inject(TranslationService);
   private loaderService = inject(LoaderService);
-  private pendingApis = 0;
-
-  private apiDone(): void {
-    if (!this.isBrowser) return;
-    this.pendingApis--;
-    if (this.pendingApis <= 0) {
-      this.loaderService.hide();
-    }
-  }
-
+  private sanitizer = inject(DomSanitizer);
   apiBlogsLoaded = false;
   apiBlogs: Blog[] = [];
+
+  apiServicesLoaded = false;
+  apiServices: Service[] = [];
+
+  benefitItems: { title: string; description: string; iconUrl: string }[] = [];
+  promoVideo: PromoVideo | null = null;
+  safeVideoUrl: SafeResourceUrl | null = null;
+  videoId: string | null = null;
+  videoLoaded = false;
 
   extraFlights: ExtraFlight[] = [
     { fromWhere: '', toWhere: '', selectedDate: null, passengers: null },
@@ -96,6 +124,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
   responsiveOptions: any[] | undefined;
   async ngOnInit() {
+    // Reset to default home page SEO
+    this.seoService.resetSeoData();
+
     this.updateDigits(false);
     this.responsiveOptions = [
       {
@@ -109,8 +140,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
         numScroll: 1,
       },
       {
-        breakpoint: '767px',
-        numVisible: 2,
+        breakpoint: '768px',
+        numVisible: 1,
         numScroll: 1,
       },
       {
@@ -121,8 +152,7 @@ export class HomeComponent implements OnInit, AfterViewInit {
     ];
     if (this.isBrowser) {
       this.startOdometer();
-      // Toplam 6 API çağrısını takip et; hepsi bitince loader kapanacak
-      this.pendingApis = 6;
+      this.loaderService.hide();
     }
     // dublicate plane for testing carousel with more items
 
@@ -132,19 +162,51 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.loadAirplanes();
     this.loadBlogs();
     this.loadServices();
+    this.loadVideo();
+    this.loadBenefits();
+  }
+  getYoutubeEmbedUrl(url: string): string {
+    const videoId = url.split('v=')[1]?.split('&')[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  loadBenefits() {
+    const langNumber = this.isBrowser ? localStorage.getItem('lang') || '2' : '2';
+    const mediaUrl = environment.mediaUrl;
+    this._homeService.getBenefitItems(Number(langNumber)).subscribe({
+      next: (data) => {
+        this.benefitItems = (data || [])
+          .filter((b: any) => b.isActive)
+          .map((b: any) => ({
+            title: b.title,
+            description: b.description,
+            iconUrl: mediaUrl + b.iconUrl,
+          }));
+      },
+      error: () => {},
+    });
+  }
+
+  loadVideo() {
+    const langNumber = this.isBrowser ? localStorage.getItem('lang') || '2' : '2';
+    this._homeService.getPromoVideo(Number(langNumber)).subscribe({
+      next: (data) => {
+        const originalUrl = data.videoUrl;
+        this.videoId = originalUrl.split('v=')[1]?.split('&')[0] ?? null;
+        const embedUrl = this.getYoutubeEmbedUrl(originalUrl);
+        this.promoVideo = { ...data, videoUrl: embedUrl };
+        this.safeVideoUrl = this.sanitizer.bypassSecurityTrustResourceUrl(embedUrl);
+      },
+      error: () => {},
+    });
   }
   loadAirplanes() {
     this._homeService.getAirplanes().subscribe({
       next: (data) => {
-        console.log('airplanes', data);
         if (data && data.length) {
           this.planes = data.filter((p) => p.isActive && p.isShow).map((p) => this.mapAirplane(p));
-          // this.planes = [...this.planes, ...this.planes];
-          // this.planes = [...this.planes, ...this.planes];
         }
-        this.apiDone();
       },
-      error: () => this.apiDone(),
+      error: () => {},
     });
   }
 
@@ -155,19 +217,16 @@ export class HomeComponent implements OnInit, AfterViewInit {
           this.apiBlogs = data.filter((b) => b.isActive && b.isShow);
           this.apiBlogsLoaded = true;
         }
-        this.apiDone();
       },
-      error: () => this.apiDone(),
+      error: () => {},
     });
   }
 
   loadServices() {
     this._homeService.getServices().subscribe({
-
       next: (data) => {
-        console.log('services', data);
-        console.log(data);
         if (data && data.length) {
+          this.apiServices = data.filter((s) => s.isActive && s.isShow);
           this.services = data
             .filter((s) => s.isActive && s.isShow)
             .map((s) => ({
@@ -177,9 +236,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
               id: s.id,
             }));
         }
-        this.apiDone();
+        this.apiServicesLoaded = true;
       },
-      error: () => this.apiDone(),
+      error: () => {},
     });
   }
 
@@ -188,14 +247,10 @@ export class HomeComponent implements OnInit, AfterViewInit {
     return url.startsWith('/uploads/') ? environment.mediaUrl + url : url;
   }
 
-  private mapAirplane(p: Airplane): any {
+  private mapAirplane(p: Airplane): PlaneViewModel {
     return {
-      subtitle: p.code || '',
-      name: p.title || p.name,
+      ...p,
       image: this.resolveImageUrl(p.imageUrl, 'assets/images/jet.png'),
-      range: p.range,
-      year: p.year,
-      seats: p.capacity,
       dayImage: this.resolveImageUrl(p.dayImageUrl, 'assets/images/gunduz.png'),
       nightImage: this.resolveImageUrl(p.nightImageUrl, 'assets/images/gece.png'),
       subImageUrl: this.resolveImageUrl(p.subImageUrl, ''),
@@ -213,6 +268,9 @@ export class HomeComponent implements OnInit, AfterViewInit {
       ],
     };
   }
+  private useExtraFlights = false;
+  extraFlightValidationError = '';
+
   openContactModal(): void {
     const allFilled = this.flights.every((f) => f.fromWhere.trim() && f.toWhere.trim());
     if (!allFilled) {
@@ -220,6 +278,20 @@ export class HomeComponent implements OnInit, AfterViewInit {
       return;
     }
     this.flightValidationError = '';
+    this.useExtraFlights = false;
+    this.submitSuccess = false;
+    this.submitError = '';
+    this.showContactModal = true;
+  }
+
+  openExtraContactModal(): void {
+    const allFilled = this.extraFlights.every((f) => f.fromWhere.trim() && f.toWhere.trim());
+    if (!allFilled) {
+      this.extraFlightValidationError = 'Lütfen tüm uçuşlar için nereden ve nereye alanlarını doldurun.';
+      return;
+    }
+    this.extraFlightValidationError = '';
+    this.useExtraFlights = true;
     this.submitSuccess = false;
     this.submitError = '';
     this.showContactModal = true;
@@ -239,12 +311,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this.submitting = true;
     this.submitError = '';
 
+    const flightsSource = this.useExtraFlights ? this.extraFlights : this.flights;
     const payload = {
       firstName: this.contactInfo.firstName.trim(),
       lastName: this.contactInfo.lastName.trim(),
       email: this.contactInfo.email.trim(),
       phone: this.contactInfo.phone.trim(),
-      flights: this.flights.map((f) => ({
+      flights: flightsSource.map((f) => ({
         fromWhere: f.fromWhere,
         toWhere: f.toWhere,
         date: f.selectedDate ? f.selectedDate.toISOString() : null,
@@ -273,9 +346,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this._homeService.getAboutUs(Number(langNumber)).subscribe({
       next: (_aboutUs) => {
         this.aboutUs = _aboutUs;
-        this.apiDone();
       },
-      error: () => this.apiDone(),
+      error: () => {},
     });
   }
   getVision() {
@@ -283,9 +355,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this._homeService.getVision(Number(langNumber)).subscribe({
       next: (_vision) => {
         this.vision = _vision;
-        this.apiDone();
       },
-      error: () => this.apiDone(),
+      error: () => {},
     });
   }
   getMission() {
@@ -293,9 +364,8 @@ export class HomeComponent implements OnInit, AfterViewInit {
     this._homeService.getMission(Number(langNumber)).subscribe({
       next: (_mission) => {
         this.mission = _mission;
-        this.apiDone();
       },
-      error: () => this.apiDone(),
+      error: () => {},
     });
   }
   // ngOnDestroy() {
@@ -418,117 +488,27 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   // Plane Carousel
-  planes = [
-    {
-      subtitle: 'meydan okuyan 604',
-      name: 'Challenger 604 OH-WIC',
-      image: 'assets/images/jet.png',
-      range: 7600,
-      year: 2019,
-      seats: 11,
-      dayImage: 'assets/images/gunduz.png',
-      nightImage: 'assets/images/gece.png',
-      subImageUrl: '',
-      subImageUrl2: '',
-      subImageUrl3: '',
-      specs: [
-        { label: 'yıl serbest bırakmak / salon tadilatı', value: '2019' },
-        { label: 'seyir hızı, KM/', value: '560,20' },
-        { label: 'uçuş aralığı, KM', value: '7600' },
-        { label: 'uzunluk, m', value: '550,10' },
-        { label: 'Yükseklik, m', value: '10000' },
-        { label: 'kanat açıklığı, m', value: '860,600' },
-        { label: 'Bagaj bölmesi hacmi, m³', value: '4560' },
-        { label: 'numara yerler', value: '7600' },
-        { label: 'Salonda sigara içme imkanı', value: 'EVET' },
-      ],
-    },
-    {
-      subtitle: 'ultra uzun menzilli',
-      name: 'Global 7500 C-FXYZ',
-      image: 'assets/images/jet.png',
-      range: 14260,
-      year: 2021,
-      seats: 19,
-      dayImage: 'assets/images/gunduz.png',
-      nightImage: 'assets/images/gece.png',
-      subImageUrl: '',
-      subImageUrl2: '',
-      subImageUrl3: '',
-      specs: [
-        { label: 'yıl serbest bırakmak / salon tadilatı', value: '2021' },
-        { label: 'seyir hızı, KM/', value: '956,00' },
-        { label: 'uçuş aralığı, KM', value: '14260' },
-        { label: 'uzunluk, m', value: '33,80' },
-        { label: 'Yükseklik, m', value: '12497' },
-        { label: 'kanat açıklığı, m', value: '31,39' },
-        { label: 'Bagaj bölmesi hacmi, m³', value: '5950' },
-        { label: 'numara yerler', value: '19' },
-        { label: 'Salonda sigara içme imkanı', value: 'EVET' },
-      ],
-    },
-    {
-      subtitle: 'hafif kategori',
-      name: 'Citation CJ4 N400CJ',
-      image: 'assets/images/jet.png',
-      range: 3278,
-      year: 2018,
-      seats: 7,
-      dayImage: 'assets/images/gunduz.png',
-      nightImage: 'assets/images/gece.png',
-      subImageUrl: '',
-      subImageUrl2: '',
-      subImageUrl3: '',
-      specs: [
-        { label: 'yıl serbest bırakmak / salon tadilatı', value: '2018' },
-        { label: 'seyir hızı, KM/', value: '778,00' },
-        { label: 'uçuş aralığı, KM', value: '3278' },
-        { label: 'uzunluk, m', value: '16,26' },
-        { label: 'Yükseklik, m', value: '13716' },
-        { label: 'kanat açıklığı, m', value: '15,49' },
-        { label: 'Bagaj bölmesi hacmi, m³', value: '1630' },
-        { label: 'numara yerler', value: '7' },
-        { label: 'Salonda sigara içme imkanı', value: 'HAYIR' },
-      ],
-    },
-    {
-      subtitle: 'hafif kategori',
-      name: 'Citation CJ4 N400CJ',
-      image: 'assets/images/jet.png',
-      range: 3278,
-      year: 2018,
-      seats: 7,
-      dayImage: 'assets/images/gunduz.png',
-      nightImage: 'assets/images/gece.png',
-      subImageUrl: '',
-      subImageUrl2: '',
-      subImageUrl3: '',
-      specs: [
-        { label: 'yıl serbest bırakmak / salon tadilatı', value: '2018' },
-        { label: 'seyir hızı, KM/', value: '778,00' },
-        { label: 'uçuş aralığı, KM', value: '3278' },
-        { label: 'uzunluk, m', value: '16,26' },
-        { label: 'Yükseklik, m', value: '13716' },
-        { label: 'kanat açıklığı, m', value: '15,49' },
-        { label: 'Bagaj bölmesi hacmi, m³', value: '1630' },
-        { label: 'numara yerler', value: '7' },
-        { label: 'Salonda sigara içme imkanı', value: 'HAYIR' },
-      ],
-    },
-  ];
+  planes: PlaneViewModel[] = [];
 
   planeIndex = 0;
-  selectedPlane: (typeof this.planes)[0] | null = null;
+  selectedPlane: PlaneViewModel | null = null;
 
   getPlaneAt(offset: number) {
     return this.planes[(this.planeIndex + offset + this.planes.length) % this.planes.length];
   }
 
-  openPlaneModal(plane: (typeof this.planes)[0]) {
+  openPlaneModal(plane: PlaneViewModel) {
     this.selectedPlane = plane;
     if (typeof document !== 'undefined') {
       document.body.style.overflow = 'hidden';
     }
+    // Set SEO data from airplane if available
+    this.seoService.setSeoData({
+      seoTitle: plane.seoTitle,
+      seoDescription: plane.seoDescription,
+      seoKeywords: plane.seoKeywords,
+      seoUrl: plane.seoUrl,
+    });
   }
 
   closePlaneModal() {
@@ -537,17 +517,59 @@ export class HomeComponent implements OnInit, AfterViewInit {
     if (typeof document !== 'undefined') {
       document.body.style.overflow = '';
     }
+    // Reset to default SEO data
+    this.seoService.resetSeoData();
+  }
+
+  // Image preview lightbox
+  previewImageUrl: string | null = null;
+
+  openPreview(url: string): void {
+    this.previewImageUrl = url;
+  }
+
+  closePreview(): void {
+    this.previewImageUrl = null;
+  }
+
+  @HostListener('document:keydown.escape')
+  onEscape(): void {
+    if (this.previewImageUrl) {
+      this.closePreview();
+    } else if (this.showQuoteModal) {
+      this.closeQuoteModal();
+    } else if (this.selectedPlane) {
+      this.closePlaneModal();
+    }
   }
 
   // Quote modal (inside plane modal)
   showQuoteModal = false;
-  quoteInfo = { name: '', phone: '', fromWhere: '', toWhere: '', selectedDate: null as Date | null, passengers: null as number | null };
+  quoteInfo = {
+    name: '',
+    lastName: '',
+    email: '',
+    phone: '',
+    fromWhere: '',
+    toWhere: '',
+    selectedDate: null as Date | null,
+    passengers: null as number | null,
+  };
   quoteSubmitting = false;
   quoteSuccess = false;
   quoteError = '';
 
   openQuoteModal(): void {
-    this.quoteInfo = { name: '', phone: '', fromWhere: '', toWhere: '', selectedDate: null, passengers: null };
+    this.quoteInfo = {
+      name: '',
+      lastName: '',
+      email: '',
+      phone: '',
+      fromWhere: '',
+      toWhere: '',
+      selectedDate: null,
+      passengers: null,
+    };
     this.quoteSuccess = false;
     this.quoteError = '';
     this.showQuoteModal = true;
@@ -560,7 +582,13 @@ export class HomeComponent implements OnInit, AfterViewInit {
   }
 
   submitQuoteRequest(): void {
-    if (!this.quoteInfo.name.trim() || !this.quoteInfo.phone.trim() || !this.quoteInfo.fromWhere.trim() || !this.quoteInfo.toWhere.trim()) {
+    if (
+      !this.quoteInfo.name.trim() ||
+      !this.quoteInfo.email.trim() ||
+      !this.quoteInfo.phone.trim() ||
+      !this.quoteInfo.fromWhere.trim() ||
+      !this.quoteInfo.toWhere.trim()
+    ) {
       this.quoteError = 'Lütfen zorunlu alanları doldurun.';
       return;
     }
@@ -569,15 +597,17 @@ export class HomeComponent implements OnInit, AfterViewInit {
 
     const payload = {
       firstName: this.quoteInfo.name.trim(),
-      lastName: '',
-      email: '',
+      lastName: this.quoteInfo.lastName.trim(),
+      email: this.quoteInfo.email.trim(),
       phone: this.quoteInfo.phone.trim(),
-      flights: [{
-        fromWhere: this.quoteInfo.fromWhere,
-        toWhere: this.quoteInfo.toWhere,
-        date: this.quoteInfo.selectedDate ? this.quoteInfo.selectedDate.toISOString() : null,
-        passengers: this.quoteInfo.passengers,
-      }],
+      flights: [
+        {
+          fromWhere: this.quoteInfo.fromWhere,
+          toWhere: this.quoteInfo.toWhere,
+          date: this.quoteInfo.selectedDate ? this.quoteInfo.selectedDate.toISOString() : null,
+          passengers: this.quoteInfo.passengers,
+        },
+      ],
     };
 
     this.http.post(`${environment.apiUrl}/flightrequest`, payload).subscribe({

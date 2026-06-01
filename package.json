@@ -3,11 +3,10 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve --configuration development",
+    "start": "ng serve --configuration production",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test",
-    "serve:ssr:tulpar-jet-front": "node dist/tulpar-jet-front/server/server.mjs"
+    "test": "ng test"
   },
   "prettier": {
     "printWidth": 100,
@@ -28,22 +27,15 @@
     "@angular/core": "^20.3.0",
     "@angular/forms": "^20.3.0",
     "@angular/platform-browser": "^20.3.0",
-    "@angular/platform-server": "^20.3.0",
     "@angular/router": "^20.3.0",
-    "@angular/ssr": "^20.3.3",
-    "@netlify/angular-runtime": "^3.0.1",
-    "@omnedia/ngx-three-globe": "^3.0.0",
     "@primeng/themes": "^20.4.0",
     "@primeuix/themes": "^1.2.3",
     "@tailwindcss/postcss": "^4.2.2",
-    "dotted-map": "^3.1.0",
-    "express": "^5.1.0",
     "postcss": "^8.5.9",
     "primeicons": "^7.0.0",
     "primeng": "^20.4.0",
     "rxjs": "~7.8.0",
     "tailwindcss": "^4.2.2",
-    "three": "^0.177.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },

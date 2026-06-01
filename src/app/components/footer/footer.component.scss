@@ -73,6 +73,31 @@
     }
   }
 
+  &__map-placeholder {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    height: 280px;
+    background-color: #0f2255;
+    color: rgba(255, 255, 255, 0.55);
+    cursor: pointer;
+    font-size: 14px;
+    letter-spacing: 0.03em;
+    transition: background-color 0.2s, color 0.2s;
+
+    &:hover {
+      background-color: #162d6a;
+      color: rgba(255, 255, 255, 0.85);
+    }
+
+    svg {
+      opacity: 0.6;
+    }
+  }
+
   // ── Alt Bar ────────────────────────────────────────────────────
   &__bottom {
     display: flex;

@@ -16,7 +16,7 @@
         </div>
         <div>
           <p class="info-card__label">{{ 'contact.phoneLabel' | translate }}</p>
-          <p class="info-card__value">+90 (212) 000 00 00</p>
+          <p class="info-card__value">{{ contactInfo?.phone || '+90 (212) 000 00 00' }}</p>
         </div>
       </div>
       <div class="info-card">
@@ -28,7 +28,7 @@
         </div>
         <div>
           <p class="info-card__label">{{ 'contact.emailLabel' | translate }}</p>
-          <p class="info-card__value">info&#64;tulparjet.com</p>
+          <p class="info-card__value">{{ contactInfo?.email || 'info@tulparjet.com' }}</p>
         </div>
       </div>
       <div class="info-card">
@@ -40,7 +40,7 @@
         </div>
         <div>
           <p class="info-card__label">{{ 'contact.addressLabel' | translate }}</p>
-          <p class="info-card__value">{{ 'contact.addressValue' | translate }}</p>
+          <p class="info-card__value">{{ contactInfo?.address || ('contact.addressValue' | translate) }}</p>
         </div>
       </div>
     </div>

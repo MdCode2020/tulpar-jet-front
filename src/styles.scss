@@ -31,11 +31,15 @@ input.p-inputtext::placeholder,
   background: #d97706;
 }
 .p-datepicker-panel {
-  background: linear-gradient(to bottom, #131e42, #131e429e) !important;
+  background: linear-gradient(to bottom, #131e42, #405cb9db) !important;
   border: none !important;
   color: #ffffff !important;
-  top: 100% !important;
+  // top: 100% !important;
   bottom: auto !important;
+}
+.p-datepicker2 .p-datepicker-panel {
+  background: linear-gradient(to bottom, #131e42, #131e429e) !important;
+  top: 100% !important;
 }
 .p-datepicker-select-year,
 .p-datepicker-select-month,
@@ -71,14 +75,23 @@ input.p-inputtext::placeholder,
 }
 .p-datepicker {
   background: transparent !important;
-  border: 1px solid #798cb3 !important;
-  border-radius: 5px !important;
+  // border: 1px solid #798cb3 !important;
+  // border-radius: 5px !important;
+  border: 0 !important;
+  border-style: solid !important  ;
+  border-color: #798cb3 !important;
+  border-bottom-width: 1px !important;
+  border-radius: 0 !important;
 
   & .p-datepicker-input,
   & .p-datepicker-dropdown {
     background: transparent !important;
     border: none !important;
     padding-right: 5px !important;
+    color: #ffffff !important;
+    @media (max-width: 480px) {
+      color: #32466eb0 !important;
+    }
   }
   & :focus {
     border-color: #32466e !important;
@@ -91,18 +104,37 @@ input.p-inputtext::placeholder,
   box-shadow: 0 0 5px #32466e66 !important;
 }
 .p-floatlabel:has(input:focus) label {
-  color: #32466e !important;
+  // color: #32466e !important;
   font-weight: 600 !important;
 }
 .p-floatlabel label {
-  font-size: 14px !important;
+  font-size: clamp(12px, 1.5vw, 13px) !important;
+  color: #ffffff !important;
+  @media (max-width: 480px) {
+    color: #32466e !important;
+  }
+}
+.flight2 .p-floatlabel label {
+  color: #ffffff !important;
+  @media (max-width: 480px) {
+    color: #ffffff !important;
+  }
 }
 .p-inputtext {
   background: transparent !important;
-  border: 1px solid #798cb3 !important;
+  // border: 1px solid #798cb3 !important;
+  border: 0 !important;
+  border-style: solid !important  ;
+  border-color: #798cb3 !important;
+  border-bottom-width: 1px !important;
+  border-radius: 0 !important;
   padding: 0.5rem 0.75rem !important;
   width: 100% !important;
-  color: #32466e !important;
+  color: #ffffffb3 !important;
+  @media (max-width: 480px) {
+    color: #32466eb0 !important;
+  }
+
   // and focus state
   & :focus {
     border-color: #32466e !important;
@@ -141,14 +173,17 @@ input[type='number']::-webkit-outer-spin-button {
     top: 50%;
     transform: translateY(-50%);
     pointer-events: none;
-    color: #798cb3;
+    color: #ffffff;
     opacity: 0.7;
+    @media (max-width: 480px) {
+      color: #32466e;
+    }
   }
 }
 
 .add-flight-btn {
   background: transparent;
-  border: 1px dashed #798cb3;
+  // border: 1px dashed #798cb3;
   border-radius: 8px;
   padding: 0.45rem 1rem;
   color: #798cb3;
@@ -158,9 +193,19 @@ input[type='number']::-webkit-outer-spin-button {
   transition: all 0.2s ease;
 
   i {
-    font-size: 12px;
+    font-size: 11px;
+    background: #003dff;
+    padding: 5px;
+    border-radius: 50%;
+    color: #ffffff;
   }
-
+  span {
+    color: #ffffffbd;
+    font-size: 11px;
+    @media (max-width: 480px) {
+      color: #32466e;
+    }
+  }
   &:hover {
     border-color: #32466e;
     color: #32466e;

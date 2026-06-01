@@ -29,6 +29,8 @@
   "home.to": "إلى",
   "home.dateTime": "التاريخ والوقت",
   "home.name": "الاسم",
+  "home.lastName": "الكنية",
+  "home.email": "البريد الإلكتروني",
   "home.phone": "الهاتف",
   "home.send": "إرسال",
   "home.passengers": "عدد المسافرين",
